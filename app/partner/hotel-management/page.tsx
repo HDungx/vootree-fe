@@ -1,5 +1,5 @@
-import React from "react";
+import Homepage from "./components/homepage";
 
 export default function page() {
-  return <div>Hotel Management</div>;
+  return <Homepage />;
 }
