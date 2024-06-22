@@ -46,7 +46,6 @@ export default function Homepage() {
       <div className="mt-10 px-36">
         <Forms selectedRow={selectedRow} />
       </div>
-      <footer className=" mt-5 justify-center flex"> @Made by DaoHehe</footer>
     </div>
   );
 }
