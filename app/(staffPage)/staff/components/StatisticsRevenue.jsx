@@ -93,7 +93,7 @@ const StatisticsRevenue = () => {
           ))}
         </select>
       </div>
-      <div className='w-full'>
+      <div className='w-10/12 m-auto'>
         <Bar data={chartData} options={options} />
       </div>
     </div>

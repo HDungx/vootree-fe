@@ -11,7 +11,7 @@ const StatisticsRoom = () => {
   const [roomBookingData, setRoomBookingData] = useState(null);
   const [availableYears, setAvailableYears] = useState([]);
   const [hotels, setHotels] = useState([]);
-
+  const [roomTypes, setRoomTypes] = useState([]);
   useEffect(() => {
     const fetchHotels = async () => {
       try {
@@ -79,6 +79,11 @@ const StatisticsRoom = () => {
           setSelectedYear(new Date().getUTCFullYear().toString());
         }
 
+        // Get distinct room types from bookings
+        const types = [...new Set(bookings.map(booking => booking.roomType))];
+        setRoomTypes(types);
+
+
         // Initialize room booking data structure
         const roomData = {};
 
@@ -89,39 +94,21 @@ const StatisticsRoom = () => {
           const bookingMonth = bookingDate.getMonth(); // Month is zero-indexed
 
           // Ensure the booking is within the selected year
-          if (bookingYear.toString() === selectedYear) {
+          if (bookingYear === parseInt(selectedYear)) {
             if (!roomData[bookingYear]) {
               roomData[bookingYear] = {
-                labels: [
-                  'January', 'February', 'March', 'April',
-                  'May', 'June', 'July', 'August',
-                  'September', 'October', 'November', 'December'
-                ], // Labels for months
-                datasets: [
-                  { label: 'Vip', data: new Array(12).fill(0) },
-                  { label: 'Default', data: new Array(12).fill(0) },
-                  { label: 'Premium', data: new Array(12).fill(0) },
-                  { label: 'Delux', data: new Array(12).fill(0) }
-                ]
+                labels: Array.from({ length: 12 }, (_, index) => index + 1), // Labels for months
+                datasets: types.map(type => ({
+                  label: type,
+                  data: new Array(12).fill(0)
+                }))
               };
             }
 
             // Increment the count for the corresponding room type and month
-            switch (booking.roomType) {
-              case 'Vip':
-                roomData[bookingYear].datasets[0].data[bookingMonth]++;
-                break;
-              case 'Default':
-                roomData[bookingYear].datasets[1].data[bookingMonth]++;
-                break;
-              case 'Premium':
-                roomData[bookingYear].datasets[2].data[bookingMonth]++;
-                break;
-              case 'Delux':
-                roomData[bookingYear].datasets[3].data[bookingMonth]++;
-                break;
-              default:
-                break;
+            const roomTypeIndex = types.indexOf(booking.roomType);
+            if (roomTypeIndex !== -1) {
+              roomData[bookingYear].datasets[roomTypeIndex].data[bookingMonth]++;
             }
           }
         });
