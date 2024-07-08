@@ -16,11 +16,16 @@ import {
   TimePicker,
   message,
 } from "antd";
+import { Upload } from "antd";
 import axios from "axios";
 import { format } from "date-fns";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import type { UploadFile } from "antd";
+import type { UploadProps } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+const { Dragger } = Upload;
 
 const formats = "HH:mm";
 const { Step } = Steps;
@@ -33,6 +38,8 @@ const MultiStepForm = () => {
   const [hotelFacilities, setHotelFacilities] = useState([]);
   const [roomFacilities, setRoomFacilities] = useState([]);
   const [userId, setUserId] = useState();
+
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const decode = jwtDecode(token);
@@ -69,7 +76,50 @@ const MultiStepForm = () => {
     status: string;
     accommodationType: object;
     user: object;
+
+    hotelImages: any[];
   }
+
+  const props: UploadProps = {
+    name: "file",
+    multiple: true,
+    beforeUpload: (file) => false, // Ngăn tải lên tự động
+    fileList: fileList, // Sử dụng trạng thái fileList hiện tại
+    onRemove: (file) => {
+      const newFileList = fileList.filter((item) => item.uid !== file.uid);
+      setFileList(newFileList);
+    },
+    onChange(info) {
+      let newFileList = [...info.fileList];
+
+      // Giới hạn số lượng file được tải lên
+      // newFileList = newFileList.slice(-10);
+
+      // Đọc từ phản hồi và hiển thị liên kết file
+      newFileList = newFileList.map((file) => {
+        if (file.response) {
+          // Component sẽ hiển thị file.url như một liên kết
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      setFileList(newFileList);
+    },
+    onDrop(e) {
+      const files = Array.from(e.dataTransfer.files);
+      const newFiles = files.map((file) => ({
+        uid: file.uid,
+        name: file.name,
+        status: "done",
+        url: URL.createObjectURL(file),
+        originFileObj: file,
+      }));
+      console.log(newFiles);
+
+      setFileList([...fileList, ...newFiles]);
+    },
+  };
 
   const complete = async () => {
     // const formatCheckInTime = formData.checkIn
@@ -122,6 +172,28 @@ const MultiStepForm = () => {
         filteredHotel
       );
       message.success("Bạn đã đăng kí thành công!");
+
+      // // Filter out files that are already uploaded
+      // const filesToUpdate = fileList.filter((file) => file.status !== "done");
+      // console.log("crazy" + JSON.stringify(filesToUpdate));
+      // if (filesToUpdate.length > 0) {
+      //   const formData = new FormData();
+      //   filesToUpdate.forEach((file) => {
+      //     formData.append("files", file.originFileObj || file);
+      //   });
+
+      //   // Upload new files
+      //   await axios.post(
+      //     `http://localhost:8080/api/hotels/${values.key}/images`,
+      //     formData,
+      //     {
+      //       headers: {
+      //         "Content-Type": "multipart/form-data",
+      //       },
+      //     }
+      //   );
+      //   message.success("Image upload successful!");
+      // }
     } catch (error) {
       console.error("Failed to submit data:", error);
       message.error("Failed to submit data");
@@ -359,6 +431,8 @@ const MultiStepForm = () => {
                   </Form.Item>
                 </div>
               </div>
+
+              
 
               <div className="mt-5 text-end">
                 <Button

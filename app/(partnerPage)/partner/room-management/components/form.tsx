@@ -8,6 +8,7 @@ import type { UploadProps } from "antd";
 import { Select, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import type { UploadFile } from 'antd';
 const { Option } = Select;
 
 type FieldType = {
@@ -23,6 +24,9 @@ type FieldType = {
   hotelID?: number;
   serveBreakfast?: string;
   roomStatus?: string;
+
+  room_images: any[];
+  
 };
 
 // const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -34,25 +38,25 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 };
 const { Dragger } = Upload;
 
-const props: UploadProps = {
-  name: "file",
-  multiple: true,
-  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
+// const props: UploadProps = {
+//   name: "file",
+//   multiple: true,
+//   action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
+//   onChange(info) {
+//     const { status } = info.file;
+//     if (status !== "uploading") {
+//       console.log(info.file, info.fileList);
+//     }
+//     if (status === "done") {
+//       message.success(`${info.file.name} file uploaded successfully.`);
+//     } else if (status === "error") {
+//       message.error(`${info.file.name} file upload failed.`);
+//     }
+//   },
+//   onDrop(e) {
+//     console.log("Dropped files", e.dataTransfer.files);
+//   },
+// };
 const onChange = (value: string) => {
   console.log(`selected ${value}`);
 };
@@ -83,6 +87,8 @@ export default function Forms_Room({
   const [propertyTypes, setPropertyTypes] = useState<
     { id: string; typeName: string }[]
   >([]);
+  const [roomImages, setRoomImages] = useState<any[]>([]);  // Add state for hotel images
+  const [fileList, setFileList] = useState<UploadFile[]>([]); // State for file list
   useEffect(() => {
     // Fetch facilities from API
     const fetchFacilities = async () => {
@@ -129,13 +135,114 @@ export default function Forms_Room({
         roomFacilities: selectedRow.roomFacilities.map(
           (f: any) => f.facility.facId
         ),
-        roomStatus:selectedRow.roomStatus
+        roomStatus:selectedRow.roomStatus,
+        // Set hotel images state
+      
       });
+
+      setRoomImages(selectedRow.room_images || []);
+      
+      setFileList(selectedRow.room_images.map((image: any) => ({
+        uid: image.id.toString(),
+        name: image.imageName,
+        url: `http://localhost:8080/api/room-images/${image.id}`,
+        status: 'done',
+      })));
     }
-    console.log(selectedRow);
+    console.log(roomImages);
   }, [selectedRow]);
 
+  // const props: UploadProps = {
+  //   name: "file",
+  //   multiple: true,
+  //   beforeUpload: (file) => false, // Prevent automatic upload
+  //   fileList: [...fileList], // Combine existing images with new ones/
+  //   // onRemove: async (file) => {
+  //   //   const isExistingImage = fileList.some((img) => img.uid === file.uid);
+  //   //   if (isExistingImage) {
+  //   //     try {
+  //   //       // await axios.delete(`http://localhost:8080/api/hotels/images/${file.uid}`);
+  //   //       message.success("Image deleted successfully!");
+  //   //       setRoomImages(setRoomImages.filter((img) => img.id.toString() !== file.uid));
+  //   //     } catch (error) {
+  //   //       console.error("Failed to delete image:", error);
+  //   //       message.error("Failed to delete image.");
+  //   //     }
+  //   //   } else {
+  //   //     const index = fileList.findIndex((f) => f.uid === file.uid);
+  //   //     const newFileList = [...fileList];
+  //   //     newFileList.splice(index, 1);
+  //   //     setFileList(newFileList); // Update fileList state after removing file
+  //   //   }
+  //   // },
+  //   onChange(info) {
+  //     console.log(info);
+      
+  //     const { status } = info.file;
+  //     console.log('Status:', status); // Ghi nhật ký trạng thái
+      
+      
+  //     if (status !== "uploading") {
+  //       console.log(info.file, info.fileList);
+  //       setFileList([...fileList, info.file]);
+        
+  //     }
+  //     if (status === 'done') {
+  //       console.log(info.file.status);
+        
+  //       message.success(`${info.file.name} file uploaded successfully`);
+  //       setFileList([...fileList, info.file]);
+  //     } else if (status === 'error') {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+  //   onDrop(e) {
+  //     console.log('Dropped files', e.dataTransfer.files);
+  //     const files = Array.from(e.dataTransfer.files);
+  //     setFileList([...fileList]); // Update fileList state
+  //   },
+  // };
+  
+  const props: UploadProps = {
+    name: "file",
+    multiple: true,
+    beforeUpload: (file) => false, // Ngăn tải lên tự động
+    fileList: fileList, // Sử dụng trạng thái fileList hiện tại
+    onRemove: (file) => {
+      const newFileList = fileList.filter((item) => item.uid !== file.uid);
+      setFileList(newFileList);
+    },
+    onChange(info) {
+      let newFileList = [...info.fileList];
 
+      // Giới hạn số lượng file được tải lên
+      // newFileList = newFileList.slice(-10);
+
+      // Đọc từ phản hồi và hiển thị liên kết file
+      newFileList = newFileList.map((file) => {
+        if (file.response) {
+          // Component sẽ hiển thị file.url như một liên kết
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      setFileList(newFileList);
+    },
+    onDrop(e) {
+      const files = Array.from(e.dataTransfer.files);
+      const newFiles = files.map((file) => ({
+        uid: file.uid,
+        name: file.name,
+        status: "done",
+        url: URL.createObjectURL(file),
+        originFileObj: file,
+      }));
+      console.log(newFiles);
+
+      setFileList([...fileList, ...newFiles]);
+    },
+  };
 
   const onFinish = async (values: any) => {
     // Change 'propertyName' to 'hotelName' in the values object
@@ -153,6 +260,29 @@ export default function Forms_Room({
       const response = await axios.put(`http://localhost:8080/api/rooms/partner/update/${values.id}`, updatedValues);
       console.log('Update success:', response.data);
       message.success('Update successful!');
+
+
+      // Filter out files that are already uploaded
+     const filesToUpdate = fileList.filter(file => file.status !== 'done');
+     console.log("crazy"+JSON.stringify(filesToUpdate));
+     if (filesToUpdate.length > 0) {
+       const formData = new FormData();
+       filesToUpdate.forEach(file => {
+         formData.append('files', file.originFileObj || file);
+       });
+ 
+       // Upload new files
+       await axios.post(
+         `http://localhost:8080/api/rooms/${values.id}/images`,
+         formData,
+         {
+           headers: {
+             'Content-Type': 'multipart/form-data',
+           },
+         }
+       );
+       message.success('Image upload successful!');
+     }
       onFormSubmit();
     } catch (error) {
       console.error('Update failed:', error);
@@ -162,8 +292,10 @@ export default function Forms_Room({
   return (
     <>
       <Row gutter={24} className=" border rounded-md">
-        <Col span={12} className="">
-          <Dragger {...props}>
+        <Col span={12} className="h-full max-h-24">
+          <Dragger {...props}
+            
+            listType="picture" >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>

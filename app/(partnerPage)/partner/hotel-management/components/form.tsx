@@ -1,6 +1,6 @@
 "use client";
 import { InboxOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Image, Input, Row } from "antd";
 import type { FormProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { message, Upload } from "antd";
@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 const { Option } = Select;
+import type { UploadFile } from "antd";
 
 type FieldType = {
   key?: number;
@@ -28,34 +29,35 @@ type FieldType = {
   hotelPhoneNum: string;
   city: string;
   userID: number;
+
+  hotelImages: any[];
 };
-
-
 
 const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 const { Dragger } = Upload;
 
-const props: UploadProps = {
-  name: "file",
-  multiple: true,
-  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
+// const props: UploadProps = {
+//   name: "file",
+//   multiple: true,
+//   beforeUpload: (file) => {
+//     // Return false to prevent automatic upload
+//     return false;
+//   },
+//   onChange(info) {
+//     const { status } = info.file;
+//     if (status !== "uploading") {
+//       console.log(info.file, info.fileList);
+//     }
+//   },
+//   onDrop(e) {
+//     console.log("Dropped files", e.dataTransfer.files);
+//     const files = e.dataTransfer.files;
+//     const fileList = Array.from(files);
+//     setFileList(fileList); // Update fileList state
+//   },
+// };
 
 const onChange = (value: string) => {
   console.log(`selected ${value}`);
@@ -88,7 +90,8 @@ export default function Forms({
   const [propertyTypes, setPropertyTypes] = useState<
     { id: string; typeName: string }[]
   >([]);
-
+  const [hotelImages, setHotelImages] = useState<any[]>([]); // Add state for hotel images
+  const [fileList, setFileList] = useState<UploadFile[]>([]); // State for file list
   useEffect(() => {
     // Fetch facilities from API
     const fetchFacilities = async () => {
@@ -99,7 +102,6 @@ export default function Forms({
           (facility: any) => facility.facType === "HOTEL"
         );
         setFacilities(hotelFacilities);
-        
       } catch (error) {
         console.error("Failed to fetch facilities:", error);
       }
@@ -147,6 +149,17 @@ export default function Forms({
         city: parsedData.city,
         userID: parsedData.userID,
       });
+      // Set hotel images state
+      // setHotelImages(parsedData.hotelImages || []);
+      setFileList(
+        parsedData.hotelImages.map((image: any) => ({
+          uid: image.id.toString(),
+          name: image.imageName,
+          url: `http://localhost:8080${image.imageUrl}`,
+          status: "done",
+        }))
+      );
+      console.log(hotelImages);
     }
   }, [form, selectedRow]);
 
@@ -215,7 +228,53 @@ export default function Forms({
     "Bạc Liêu",
     "Cà Mau",
   ];
+  // const listHotelImg: UploadFile[] = hotelImages.map((image) => ({
+  //   uid: image.id.toString(),
+  //   name: image.imageName,
+  //   url: `http://localhost:8080${image.imageUrl}`,
+  //   status: 'done'
+  // }));
 
+  const props: UploadProps = {
+    name: "file",
+    multiple: true,
+    beforeUpload: (file) => false, // Ngăn tải lên tự động
+    fileList: fileList, // Sử dụng trạng thái fileList hiện tại
+    onRemove: (file) => {
+      const newFileList = fileList.filter((item) => item.uid !== file.uid);
+      setFileList(newFileList);
+    },
+    onChange(info) {
+      let newFileList = [...info.fileList];
+
+      // Giới hạn số lượng file được tải lên
+      // newFileList = newFileList.slice(-10);
+
+      // Đọc từ phản hồi và hiển thị liên kết file
+      newFileList = newFileList.map((file) => {
+        if (file.response) {
+          // Component sẽ hiển thị file.url như một liên kết
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      setFileList(newFileList);
+    },
+    onDrop(e) {
+      const files = Array.from(e.dataTransfer.files);
+      const newFiles = files.map((file) => ({
+        uid: file.uid,
+        name: file.name,
+        status: "done",
+        url: URL.createObjectURL(file),
+        originFileObj: file,
+      }));
+      console.log(newFiles);
+
+      setFileList([...fileList, ...newFiles]);
+    },
+  };
 
   const onFinish = async (values: any) => {
     // Change 'propertyName' to 'hotelName' in the values object
@@ -226,34 +285,93 @@ export default function Forms({
       hotelName: values.propertyName, // Change 'propertyName' to 'hotelName'
       accommodationTypeId: values.propertyType,
       userId: values.userID,
-      status: 'PENDING', // Change status to 'PENDING',
+      status: "ACTIVE", // Change status to 'PENDING',
       hotelFacilities: values.facility,
-      checkInTime: values.checkIn ? values.checkIn.format('HH:mm:ss') : undefined, // Convert to string format 'HH:mm'
-      checkOutTime: values.checkOut ? values.checkOut.format('HH:mm:ss') : undefined, // Convert to string format 'HH:mm'
+      checkInTime: values.checkIn
+        ? values.checkIn.format("HH:mm:ss")
+        : undefined, // Convert to string format 'HH:mm'
+      checkOutTime: values.checkOut
+        ? values.checkOut.format("HH:mm:ss")
+        : undefined, // Convert to string format 'HH:mm'
     };
-  console.log(updatedValues);
-  
+    console.log(updatedValues);
+
     try {
-      const response = await axios.put(`http://localhost:8080/api/hotels/partner/update/${values.key}`, updatedValues);
-      console.log('Update success:', response.data);
-      message.success('Update successful!');
+      const response = await axios.put(
+        `http://localhost:8080/api/hotels/partner/update/${values.key}`,
+        updatedValues
+      );
+      console.log("Update success:", response.data);
+      message.success("Update information successful!");
+
+      // Handle image uploads
+
+      // Filter out files that are already uploaded
+      const filesToUpdate = fileList.filter((file) => file.status !== "done");
+      console.log("crazy" + JSON.stringify(filesToUpdate));
+      if (filesToUpdate.length > 0) {
+        const formData = new FormData();
+        filesToUpdate.forEach((file) => {
+          formData.append("files", file.originFileObj || file);
+        });
+
+        // Upload new files
+        await axios.post(
+          `http://localhost:8080/api/hotels/${values.key}/images`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        message.success("Image upload successful!");
+      }
+
+      // Handle image deletions
+      // const originalFileList = selectedRow.hotelImages.map((image: any) => ({
+      //   uid: image.id.toString(),
+      //   name: image.imageName,
+      //   url: `http://localhost:8080${image.imageUrl}`,
+      //   status: "done",
+      // }));
+
+      // const filesToDelete = originalFileList.filter(
+      //   (originalFile) =>
+      //     !fileList.some((file) => file.uid === originalFile.uid)
+      // );
+
+      // for (const file of filesToDelete) {
+      //   await axios.delete(
+      //     `http://localhost:8080/api/hotels/${values.key}/images/${file.uid}`
+      //   );
+      // }
+
+      // message.success("Image deletion successful!");
+
       onFormSubmit();
     } catch (error) {
-      console.error('Update failed:', error);
-      message.error('Update failed!');
+      console.error("Update failed:", error);
+      message.error("Update failed!");
     }
   };
+
+  // console.log(JSON.stringify(listHotelImg, null, 2));
 
   return (
     <>
       <Row gutter={24} className="border rounded-md">
-        <Col span={12} className="">
-          <Dragger {...props} className="h-full w-full">
+        <Col span={12} className="h-full max-h-24">
+          <Dragger
+            {...props}
+            listType="picture"
+            // fileList={[...listHotelImg]}
+          >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">
-              Click image to this area to upload
+              Click or drag image files to this area to upload
             </p>
             <p className="ant-upload-hint">
               Support for a single or bulk upload. Strictly prohibited from
@@ -261,6 +379,7 @@ export default function Forms({
             </p>
           </Dragger>
         </Col>
+
         <Col span={12} className="">
           <Form
             layout="vertical"
@@ -298,7 +417,7 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <Input  disabled={isFormDisabled}/>
+                  <Input disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
             </Row>
@@ -344,7 +463,7 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <Rate disabled={isFormDisabled}/>
+                  <Rate disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -358,11 +477,7 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <TimePicker
-                    
-                    format={format}
-                    disabled={isFormDisabled}
-                  />
+                  <TimePicker format={format} disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -376,11 +491,7 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <TimePicker
-                    
-                    format={format}
-                    disabled={isFormDisabled}
-                  />
+                  <TimePicker format={format} disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
             </Row>
@@ -407,7 +518,6 @@ export default function Forms({
                         .toLowerCase()
                         .indexOf(input.toLowerCase()) >= 0
                     }
-
                     disabled={isFormDisabled}
                   >
                     {/* Tạo các Option cho Select Box */}
@@ -466,7 +576,7 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <Input disabled={isFormDisabled}/>
+                  <Input disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
             </Row>
@@ -482,14 +592,14 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <Input disabled={isFormDisabled}/>
+                  <Input disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={24}>
               <Col span={24}>
                 <Form.Item label="Description" name="description">
-                  <TextArea rows={4} disabled={isFormDisabled}/>
+                  <TextArea rows={4} disabled={isFormDisabled} />
                 </Form.Item>
               </Col>
             </Row>
@@ -512,7 +622,6 @@ export default function Forms({
                       label: facility.facName,
                       value: facility.facId,
                     }))}
-
                     disabled={isFormDisabled}
                   />
                 </Form.Item>
@@ -530,9 +639,13 @@ export default function Forms({
                     },
                   ]}
                 >
-                  <Select style={{ width: 120 }} onChange={handleChange} disabled={isFormDisabled}>
-                    <Option value="ACTIVE">Active</Option>
-                    <Option value="PENDING">Pending</Option>
+                  <Select
+                    style={{ width: 120 }}
+                    onChange={handleChange}
+                    disabled={isFormDisabled}
+                  >
+                    <Option value="ACTIVE">ACTIVE</Option>
+                    <Option value="PENDING">PENDING</Option>
                   </Select>
                 </Form.Item>
               </Col>

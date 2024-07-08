@@ -42,6 +42,8 @@ export default function Tables({
             accommodationType: item.accommodationType,
             hotelFacilities: item.hotelFacilities,
             userID: item.user.id,
+
+            hotelImages:item.hotelImages
           }));
 
         console.log(fetchedData);

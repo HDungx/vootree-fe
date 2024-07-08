@@ -65,6 +65,8 @@ export default function Tables({
           hotelId: item.hotel.id,
           roomFacilities: item.roomFacilities,
           roomStatus: item.status,
+
+          room_images:item.room_images
         }));
         setData(fetchedData);
         // console.log(fetchedData);
