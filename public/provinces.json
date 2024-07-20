@@ -14,6 +14,15 @@
         "isDeleted": false
       },
       {
+        "_id": "60eaaa6f1173335842d35663",
+        "name": "Đà Lạt",
+        "slug": "Da-lat",
+        "type": "tinh",
+        "name_with_type": "Tỉnh Da lat",
+        "code": "1",
+        "isDeleted": false
+      },
+      {
         "_id": "60eaaa6f1173335842c3565b",
         "name": "Bà Rịa - Vũng Tàu",
         "slug": "ba-ria---vung-tau",

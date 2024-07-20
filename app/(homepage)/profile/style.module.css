@@ -1,0 +1,11 @@
+
+.header{
+    width: 100%;
+    z-index: 10;
+    background-color: white;
+}
+
+.link :hover{
+   background-color: rgb(55, 65, 81/var(--tw-bg-opacity));
+   --tw-bg-opacity:0.55;
+}

@@ -62,12 +62,12 @@ export default function Navbar({ bg, searchbar, logo }) {
                       >
                         Trang chủ
                       </Link>
-                      <Link
+                      {/* <Link
                         href="/hotels"
                         className="text-white hover:bg-gray-700 hover:bg-opacity-55 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Danh sách khách sạn
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>

@@ -4,10 +4,12 @@ import Image from "next/legacy/image";
 import React from "react";
 import RoomFacilities from "./roomFacilities";
 import { url } from "inspector";
+import Link from "next/link";
 
 export default function RoomInfo({ data }) {
   const validateRoom = data?.rooms?.length > 0;
   const validateImg = data?.rooms?.room_images?.length > 0;
+
   const formatNumber = (number) => {
     return number?.toLocaleString("vi-VN", {
       style: "currency",
@@ -108,14 +110,25 @@ export default function RoomInfo({ data }) {
                         style={{ width: "20%" }}
                         className="items-center text-start justify-center flex"
                       >
-                        <Button
-                          size="large"
-                          type="primary"
-                          danger
-                          href={`/booking/${item.id}`}
+                        <Link
+                          href={{
+                            pathname: `/booking/${item.id}`,
+                            query: {
+                              ...Object.fromEntries(
+                                new URLSearchParams(window.location.search)
+                              ),
+                            },
+                          }}
                         >
-                          Chọn phòng
-                        </Button>
+                          <Button
+                            size="large"
+                            type="primary"
+                            danger
+                            //href={}
+                          >
+                            Chọn phòng
+                          </Button>
+                        </Link>
                       </Card.Grid>
                     </Card>
                   </div>

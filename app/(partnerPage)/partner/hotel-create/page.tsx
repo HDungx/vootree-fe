@@ -97,7 +97,7 @@ const MultiStepForm = () => {
       hotelPhoneNum: formData.hotelPhoneNum,
       hotelStars: formData.stars,
       status: formData.status,
-      accommodationTypeId: formData.propertyType,
+      accommodationTypeId: formData.propertyType.id,
       userId: userId,
       hotelFacilities: hotelFacilitiesObject,
       rooms: [

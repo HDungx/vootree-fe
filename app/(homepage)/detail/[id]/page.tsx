@@ -1,30 +1,12 @@
 "use client";
-import {
-  ClipboardDocumentListIcon,
-  ClockIcon,
-  DocumentTextIcon,
-  MapPinIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Anchor,
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Divider,
-  Image,
-  Rate,
-  Row,
-  Tag,
-} from "antd";
-import { useRouter } from "next/router";
+import { Anchor, Card, message } from "antd";
 
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import HotelInfo from "../components/hotelInfo";
-import RoomInfo from "../components/roomInfo";
 import PolicyInfo from "../components/policyInfo";
 import RateInfo from "../components/rateInfo";
+import RoomInfo from "../components/roomInfo";
 const { Meta } = Card;
 const hotelImages = [
   { id: "1", img: "du-lich-Da-Lat-ivivu.jpg" },
@@ -43,9 +25,29 @@ export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const [data, setData] = useState([]);
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const searchValue = searchParams.get("search");
+    const checkInValue = searchParams.get("checkIn");
+    const checkOutValue = searchParams.get("checkOut");
+    const guestsValue = searchParams.get("guests");
+    const roomsValue = searchParams.get("rooms");
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/api/hotels/${id}`); // API backend trả về toàn bộ giá trị
-      const allData = await response.json();
+      const response = await axios.get(
+        `http://localhost:8080/api/hotels/${id}`,
+        {
+          params: {
+            id: id,
+            city: searchValue,
+            hotelName: searchValue,
+            capacity: guestsValue,
+            checkinDate: checkInValue,
+            checkoutDate: checkOutValue,
+            rooms: roomsValue,
+          },
+        }
+      ); // API backend trả về toàn bộ giá trị
+      const allData = await response.data;
+
       setData(allData); // Lưu trữ toàn bộ dữ liệu
     };
 
