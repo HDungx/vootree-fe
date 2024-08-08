@@ -6,6 +6,7 @@ import CustomerInfo from "../components/customer-info";
 import PriceInfo from "../components/price-info";
 import SelectedInfo from "../components/selected-info";
 import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "jwt-decode";
 import axios from "axios";
 import {
   ExceptionOutlined,
@@ -13,6 +14,14 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import withAuth from "@/components/withAuth";
+import { CustomJWT } from "@/utils/jwtCustom";
+
+// interface CustomJWT extends JwtPayload {
+//   user_id: string;
+//   phoneNum: string;
+//   email: string;
+//   roles: string;
+// }
 
 const Homepage = ({ params }: { params: { id: string } }) => {
   const id = params.id;
@@ -22,10 +31,10 @@ const Homepage = ({ params }: { params: { id: string } }) => {
   const [roomData, setRoomData] = useState([]);
   const [checkInValue, setCheckInValue] = useState("");
   const [checkOutValue, setCheckOutValue] = useState("");
-  const [fullName, setFullName] = useState();
-  const [email, setEmail] = useState();
-  const [phoneNum, setPhoneNum] = useState();
-  const [role, setRole] = useState();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [role, setRole] = useState("");
   const [hotelData, setHotelData] = useState();
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -52,12 +61,12 @@ const Homepage = ({ params }: { params: { id: string } }) => {
     setRooms(roomsToNum);
     setGuests(guestToNum);
     console.log(hotelData);
-  }, []);
+  }, [hotelData, id]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decode = jwtDecode(token);
+      const decode = jwtDecode<CustomJWT>(token);
       const userId = decode?.user_id;
       const phoneNum = decode?.phoneNum;
       const email = decode?.email;

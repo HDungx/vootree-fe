@@ -8,11 +8,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <header>
-        <Navbar
+        {/* <Navbar
           bg={styles.header}
           searchbar=""
           logo="/logo_preview_rev_1.png"
-        />
+        /> */}
       </header>
 
       <div className="">{children}</div>

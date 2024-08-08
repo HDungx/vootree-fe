@@ -1,3 +1,4 @@
+import { CustomJWT } from "@/utils/jwtCustom";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -30,8 +31,8 @@ export default function HistoryBooking() {
 
     if (token) {
       try {
-        const decoded = jwtDecode(token);
-        const userId = decoded.id; // Điều chỉnh theo cấu trúc của JWT của bạn
+        const decoded = jwtDecode<CustomJWT>(token);
+        const userId = decoded?.id; // Điều chỉnh theo cấu trúc của JWT của bạn
         setUserId(userId);
 
         const fetchData = async () => {

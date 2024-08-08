@@ -8,7 +8,7 @@ import SearchBar from "./components/searchBar";
 import FacilityCheckBox from "./components/facilityCheckBox";
 
 export default function Page() {
-  const [checkedValues, setCheckedValues] = useState([]);
+  const [checkedValues, setCheckedValues] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([80000, 50000000]);
   const [isLoaded, setIsLoaded] = useState(false); // Trạng thái cho biết đã tải xong hay chưa
 

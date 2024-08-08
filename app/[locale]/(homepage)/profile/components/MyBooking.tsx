@@ -4,21 +4,46 @@ import dayjs from "dayjs";
 import CountdownTimer from "./CountdownTimer";
 import axios from "axios";
 
+interface BookingData {
+  key: string;
+  data: any; // Thay thế 'any' bằng kiểu dữ liệu chính xác nếu có thể
+  expiration: any; // Thay thế 'any' bằng kiểu dữ liệu chính xác nếu có thể
+}
 const MyBooking = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<BookingData[]>([]);
 
   useEffect(() => {
     const loadBookings = () => {
-      const bookingsArray = [];
+      const bookingsArray: BookingData[] = [];
       for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
+        const key = localStorage.key(i) || "";
+        // if (key.startsWith("bookingData_")) {
+
+        //   const bookingData = JSON.parse(localStorage.getItem(key));
+        //   bookingsArray.push({
+        //     key: key,
+        //     data: bookingData.data,
+        //     expiration: bookingData.expiration,
+        //   });
+        // }
+
         if (key.startsWith("bookingData_")) {
-          const bookingData = JSON.parse(localStorage.getItem(key));
-          bookingsArray.push({
-            key: key,
-            data: bookingData.data,
-            expiration: bookingData.expiration,
-          });
+          const storedData = localStorage.getItem(key);
+
+          if (storedData !== null) {
+            try {
+              const bookingData = JSON.parse(storedData);
+              bookingsArray.push({
+                key: key,
+                data: bookingData.data,
+                expiration: bookingData.expiration,
+              });
+            } catch (error) {
+              console.error("Error parsing JSON from localStorage:", error);
+            }
+          } else {
+            console.warn(`No data found for key: ${key}`);
+          }
         }
       }
       setBookings(bookingsArray);
@@ -41,11 +66,20 @@ const MyBooking = () => {
   const clearExpiredBookings = () => {
     const now = Date.now();
     for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
+      const key = localStorage.key(i) || "";
       if (key.startsWith("bookingData_")) {
-        const item = JSON.parse(localStorage.getItem(key));
-        if (item && item.expiration < now) {
-          localStorage.removeItem(key); // Xóa dữ liệu đã hết hạn
+        const storedData = localStorage.getItem(key);
+        if (storedData !== null) {
+          try {
+            const item = JSON.parse(storedData);
+            if (item && item.expiration < now) {
+              localStorage.removeItem(key); // Xóa dữ liệu đã hết hạn
+            }
+          } catch (error) {
+            console.error("Error parsing JSON from localStorage:", error);
+          }
+        } else {
+          console.warn(`No data found for key: ${key}`);
         }
       }
     }

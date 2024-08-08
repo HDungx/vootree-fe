@@ -13,6 +13,7 @@ import axios from "axios";
 
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { CustomJWT } from "@/utils/jwtCustom";
 export default function Page() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState(false);
@@ -30,7 +31,7 @@ export default function Page() {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
 
-        const decodeToken = jwtDecode(response.data.token);
+        const decodeToken = jwtDecode<CustomJWT>(response.data.token);
         const tokenRole = decodeToken?.roles;
         if (tokenRole[0] == "PARTNER") {
           router.push("/partner/home");
@@ -58,7 +59,7 @@ export default function Page() {
         `http://localhost:8080/oauth2/authorization/google`
       );
       localStorage.setItem("token", response.data.token);
-      const decodeToken = jwtDecode(response.data.token);
+      const decodeToken = jwtDecode<CustomJWT>(response.data.token);
       const tokenRole = decodeToken?.roles;
       if (tokenRole[0] == "PARTNER") {
         router.push("/partner/home");

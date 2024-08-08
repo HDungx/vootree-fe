@@ -11,31 +11,41 @@ import {
   Space,
   Tag,
   message,
+  InputRef,
 } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { FilterDropdownProps, SortOrder } from "antd/es/table/interface";
 
 const deleteRow = async (id) => {
   try {
     await axios.delete(`/api/data/${id}`);
     message.success("Row deleted successfully");
-    fetchData(); // Refresh data after delete
+    //fetchData(); // Refresh data after delete
   } catch (error) {
     message.error("Error deleting row");
     console.error("Error deleting data", error);
   }
 };
 const EditableCell = ({
-  editing, // Xác định xem ô này có đang ở chế độ chỉnh sửa hay không
-  dataIndex, // Tên thuộc tính của dữ liệu (ví dụ: 'name', 'age', 'address')
-  title, // Tiêu đề của ô, sử dụng trong thông báo lỗi nếu không có giá trị
-  inputType, // Loại input (ví dụ: 'number' hoặc 'text')
-  record, // Dữ liệu của hàng hiện tại
-  index, // Chỉ số của hàng hiện tại
-  children, // Các phần tử con (nội dung hiển thị của ô khi không ở chế độ chỉnh sửa)
-  ...restProps // Các thuộc tính còn lại được truyền vào (ví dụ: các thuộc tính của ô <td>)
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}: {
+  editing: boolean;
+  dataIndex: string;
+  title: string;
+  inputType: string;
+  record: any;
+  index: number;
+  children: React.ReactNode;
 }) => {
   // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
@@ -197,8 +207,10 @@ const PendingTable = () => {
         `http://localhost:8080/api/hotels/staff/update/${key}`,
         row
       );
-      const newData = [...data].filter((item) => item.status === "PENDING");
-      const index = newData.findIndex((item) => key === item.key);
+      const newData = [...data].filter(
+        (item: any) => item?.status === "PENDING"
+      ) as any;
+      const index = newData.findIndex((item: any) => key === item?.key);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -220,7 +232,7 @@ const PendingTable = () => {
   // search filter
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const searchInput = useRef(null);
+  const searchInput = useRef<InputRef>(null);
   const handleSearch = (
     selectedKeys: React.SetStateAction<string>[],
     confirm: () => void,
@@ -235,79 +247,78 @@ const PendingTable = () => {
     setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex: React.SetStateAction<string>) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
+  const getColumnSearchProps = (dataIndex: string) => ({
+    filterDropdown:
+      (props: FilterDropdownProps) =>
+      ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) =>
+        (
+          <div
             style={{
-              width: 90,
+              padding: 8,
             }}
+            onKeyDown={(e) => e.stopPropagation()}
           >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
+            <Input
+              ref={searchInput}
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onPressEnter={() =>
+                handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              style={{
+                marginBottom: 8,
+                display: "block",
+              }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                icon={<SearchOutlined />}
+                size="small"
+                style={{
+                  width: 90,
+                }}
+              >
+                Search
+              </Button>
+              <Button
+                onClick={() => clearFilters && handleReset(clearFilters)}
+                size="small"
+                style={{
+                  width: 90,
+                }}
+              >
+                Reset
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({
+                    closeDropdown: false,
+                  });
+                  setSearchText(selectedKeys[0]);
+                  setSearchedColumn(dataIndex);
+                }}
+              >
+                Filter
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  close();
+                }}
+              >
+                close
+              </Button>
+            </Space>
+          </div>
+        ),
     filterIcon: (filtered: any) => (
       <SearchOutlined
         style={{
@@ -357,7 +368,7 @@ const PendingTable = () => {
       editable: false,
       sorter: (a: { hotelStars: number }, b: { hotelStars: number }) =>
         a.hotelStars - b.hotelStars,
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ["descend", "ascend"] as SortOrder[],
     },
     {
       title: "Check In Time",

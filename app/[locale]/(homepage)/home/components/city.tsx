@@ -3,6 +3,8 @@ import React from "react";
 import Image from "next/legacy/image";
 import { Col, Row, Typography } from "antd";
 import Link from "next/link";
+import dayjs from "dayjs";
+
 const cityInfo = [
   {
     name: "DN",
@@ -54,12 +56,28 @@ const cityInfo = [
     link: "/home",
   },
 ];
+const checkInValue = dayjs().format("YYYY-MM-DD");
+const checkOutValue = dayjs().add(1, "day").format("YYYY-MM-DD");
+const guestsValue = "1";
+const roomsValue = "1";
 const Card = () => {
   return (
     <Row gutter={24} className="w-4/5">
       {cityInfo.map((item) => (
         <Col md={12} lg={6} xs={24} key={item.name} className="mt-5">
-          <Link href={item.link} className="w-44 h-0">
+          <Link
+            href={{
+              pathname: `/hotels`,
+              query: {
+                search: item?.title,
+                checkIn: checkInValue,
+                checkOut: checkOutValue,
+                guests: guestsValue,
+                rooms: roomsValue,
+              },
+            }}
+            className="w-44 h-0"
+          >
             <div className="relative w-full h-40 bg-cover bg-center rounded-lg shadow-md overflow-hidden hover:shadow-md hover:shadow-slate-500">
               <Image
                 src={item.image}
@@ -75,19 +93,18 @@ const Card = () => {
                     color: "white",
                     fontWeight: "bold",
                     fontSize: "large",
+                    textDecoration: "",
                   }}
                 >
                   <div className="flex">
                     {item.title}
-                    <img
+                    {/* <Image
                       src="/icon/co-viet-nam.webp"
                       alt="Vietnam Flag"
-                      style={{
-                        width: "28px",
-                        height: "23px",
-                        marginLeft: "10px",
-                      }}
-                    />
+                      width={28}
+                      height={23}
+                      className="ms-4"
+                    /> */}
                   </div>
                 </Typography.Title>
               </div>

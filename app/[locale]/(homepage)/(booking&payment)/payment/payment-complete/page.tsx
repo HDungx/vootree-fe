@@ -6,14 +6,30 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
+interface UserInfo {
+  email: string;
+  phoneNum: string;
+  fullName: string;
+}
+
+interface BookingInfo {
+  hotelName: string;
+  roomType: string;
+  checkIn: string;
+  checkOut: string;
+  guests: any;
+  rooms: any;
+  totalPrice: any;
+}
+
 export default function Page() {
   const [paymentValues, setPaymentValues] = useState({});
-  const [userInfo, setUserInfo] = useState({});
-  const [bookingInfo, setBookingInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [bookingInfo, setBookingInfo] = useState<BookingInfo>();
   const [emailReceipt, setEmailReceipt] = useState({});
   const [partnerEmail, setPartnerEmail] = useState();
   useEffect(() => {
-    const localStorageValues = localStorage.getItem("bookingInfo");
+    const localStorageValues = localStorage.getItem("bookingInfo") || "";
     const data = JSON.parse(localStorageValues);
     const fromDate = data.check_in_date;
     const toDate = data.check_out_date;
@@ -123,14 +139,14 @@ export default function Page() {
               <p className="text-lg  font-semibold">Thông tin người đặt</p>
               <p className="mt-4">
                 Họ và tên:{" "}
-                <span className="font-semibold">{userInfo.fullName}</span>
+                <span className="font-semibold">{userInfo?.fullName}</span>
               </p>
               <p className="mt-4">
                 Số điện thoại:{" "}
-                <span className="font-semibold">{userInfo.phoneNum}</span>
+                <span className="font-semibold">{userInfo?.phoneNum}</span>
               </p>
               <p className="mt-4">
-                Email: <span className="font-semibold">{userInfo.email}</span>{" "}
+                Email: <span className="font-semibold">{userInfo?.email}</span>{" "}
               </p>
             </div>
           </div>
@@ -153,38 +169,38 @@ export default function Page() {
               <div className="flex mt-4">
                 <p className=" w-3/12">Khách sạn:</p>
                 <span className="w-6/12 font-semibold">
-                  {bookingInfo.hotelName}
+                  {bookingInfo?.hotelName}
                 </span>
               </div>
               <div className="flex mt-4">
                 <p className="w-3/12">Phòng:</p>
                 <span className="w-6/12 font-semibold">
-                  {bookingInfo.roomType}
+                  {bookingInfo?.roomType}
                 </span>
               </div>
               <div className="flex mt-4">
                 <p className="w-3/12">Ngày nhận phòng:</p>
 
                 <span className="w-6/12 font-semibold">
-                  {bookingInfo.checkIn}
+                  {bookingInfo?.checkIn}
                 </span>
               </div>
               <div className="flex mt-4">
                 <p className="w-3/12">Ngày trả phòng:</p>
                 <span className="w-6/12 font-semibold">
-                  {bookingInfo.checkOut}
+                  {bookingInfo?.checkOut}
                 </span>
               </div>
               <div className="flex mt-4">
                 <p className="w-3/12">Số lượng phòng:</p>
                 <span className="w-6/12 font-semibold">
-                  {bookingInfo.rooms}
+                  {bookingInfo?.rooms}
                 </span>
               </div>
               <div className="flex mt-4">
                 <p className="w-3/12">Tổng tiền:</p>
                 <span className="w-6/12 font-semibold text-emerald-500">
-                  {formatCurrency(bookingInfo.totalPrice)}
+                  {formatCurrency(bookingInfo?.totalPrice)}
                 </span>
               </div>
             </div>

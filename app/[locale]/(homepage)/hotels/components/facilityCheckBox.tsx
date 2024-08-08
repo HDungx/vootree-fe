@@ -9,7 +9,7 @@ type FacilityCheckBoxProps = {
 export default function FacilityCheckBox({
   setCheckedValues,
 }: FacilityCheckBoxProps) {
-  const [data, setData] = useState<{ key: string; name: string }[]>([]);
+  const [data, setData] = useState<{ key: string; label: string; value: string }[]>([]);
 
   const CheckboxGroup = Checkbox.Group;
 
@@ -19,8 +19,8 @@ export default function FacilityCheckBox({
       .then((response) => {
         const fetchedData = response.data.map((item: any) => ({
           key: item.facId,
-          label: item.facName, // sử dụng 'label' thay vì 'name' cho Checkbox options
-          value: item.facId, // thêm 'value' cho Checkbox options
+          label: item.facName, // sử dụng 'label' cho Checkbox options
+          value: item.facId, // sử dụng 'value' cho Checkbox options
         }));
         setData(fetchedData);
       })
@@ -39,7 +39,6 @@ export default function FacilityCheckBox({
         <strong>Loại tiện ích</strong>
       </div>
       <CheckboxGroup
-        options={data}
         onChange={onChange}
         style={{
           width: "100%",
@@ -47,7 +46,13 @@ export default function FacilityCheckBox({
           flexDirection: "column",
           marginBottom: "10px",
         }}
-      />
+      >
+        {data.map((item) => (
+          <Checkbox key={item.key} value={item.value}>
+            {item.label}
+          </Checkbox>
+        ))}
+      </CheckboxGroup>
     </div>
   );
 }

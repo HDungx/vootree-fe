@@ -13,14 +13,17 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Avatar, Dropdown, Menu, Space } from "antd";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { CustomJWT } from "@/utils/jwtCustom";
+import LanguageSwitcher from "@/components/language-switcher";
+import SearchBar from "./searchBar";
 
-export default function Navbar({ bg, searchbar, logo }) {
-  const [username, setUsername] = useState();
+export default function Navbar({ bg, logo }) {
+  const [username, setUsername] = useState<string | undefined>();
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decodeToken = jwtDecode(token);
+      const decodeToken = jwtDecode<CustomJWT>(token);
       if (decodeToken && decodeToken.roles[0] == "CUSTOMER") {
         const use = decodeToken.sub;
         setUsername(use);
@@ -97,6 +100,7 @@ export default function Navbar({ bg, searchbar, logo }) {
                   <div className="flex justify-center gap-1">
                     <div className="hidden sm:ml-6 sm:block ">
                       <div className="flex space-x-1">
+                        <LanguageSwitcher />
                         <Link
                           href="/partner/signup"
                           className="  hover:bg-gray-700 hover:bg-opacity-55 hover:  rounded-md px-3 py-2 text-sm font-medium"
@@ -117,9 +121,9 @@ export default function Navbar({ bg, searchbar, logo }) {
                           <Space wrap>
                             <Avatar
                               icon={<UserOutlined />}
-                              name={username}
-                              size="40"
-                              round={true}
+                              //name={username}
+                              size={40}
+                              //round={true}
                               className="cursor-pointer"
                               alt="User Avatar"
                             />
@@ -199,7 +203,7 @@ export default function Navbar({ bg, searchbar, logo }) {
       {/* <div className="max-w-3xl h-56 bg-white mx-auto mt-6 border border-gray-400 rounded-lg ">
         <SearchBar />
       </div> */}
-      {searchbar}
+      {/* {searchbar} */}
       {/* <SearchBar /> */}
     </header>
   );

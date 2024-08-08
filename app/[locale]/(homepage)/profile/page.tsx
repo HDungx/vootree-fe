@@ -15,11 +15,11 @@ import MyBooking from "./components/MyBooking";
 import withAuth from "@/components/withAuth";
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
+function getItem(label, key, icon) {
   return {
     key,
     icon,
-    children,
+
     label,
   };
 }

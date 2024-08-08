@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "ES2015", // Hoặc bất kỳ giá trị `target` nào bạn đang sử dụng
+    "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,7 +22,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "typeRoots": ["./node_modules/@types", "./utils/type.d.ts"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/withAuth.js", "app/[locale]/(staffPage)/staff/components/Bookings.jsx",],
   "exclude": ["node_modules"]

@@ -13,22 +13,21 @@ import {
 import { Bars3Icon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import SearchBar from "../app/home/components/searchBarHomePage";
-import styles from "./style.module.css";
-import { useEffect, useState, Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
-import { Avatar, Dropdown, Space, Menu as AntMenu } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { Menu as AntMenu, Avatar, Dropdown, Space } from "antd";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
+import { CustomJWT } from "@/utils/jwtCustom";
 
 export default function Navbar({ searchbar, logo }) {
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState<string>();
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decodeToken = jwtDecode(token);
+      const decodeToken = jwtDecode<CustomJWT>(token);
       if (decodeToken && decodeToken.roles[0] == "PARTNER") {
         const use = decodeToken.sub;
         setUsername(use);
@@ -162,9 +161,9 @@ export default function Navbar({ searchbar, logo }) {
                           <Space wrap>
                             <Avatar
                               icon={<UserOutlined />}
-                              name={username}
-                              size="40"
-                              round={true}
+                              //name={username}
+                              size={40}
+                              //round={true}
                               className="cursor-pointer"
                               alt="User Avatar"
                             />

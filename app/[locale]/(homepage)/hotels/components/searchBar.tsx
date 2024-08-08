@@ -47,17 +47,20 @@ export default function SearchBar() {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [selectionData, setSelectionData] = useState({});
+  const [filteredOptions, setFilteredOptions] = useState<string[]>();
+  const [selectionData, setSelectionData] = useState<string[]>();
   const [form] = Form.useForm();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/hotels");
         const data = response.data;
-        const filteredHotelName = data.map((item) => item.hotelName);
-        const citySet = new Set(data.map((item) => item.city));
-        const hotelCities = [...citySet];
+        // const filteredHotelName = data.map((item) => item.hotelName);
+        // const citySet = new Set(data.map((item) => item.city));
+        // const hotelCities = [...citySet];
+        const filteredHotelName = data.map((item: any) => item.hotelName);
+        const citySet = new Set(data.map((item: any) => item.city));
+        const hotelCities = Array.from(citySet) as string[]; // Chuyển đổi Set thành mảng
         if (window.location.pathname.startsWith("/detail")) {
           setSelectionData(hotelCities);
         }
@@ -90,13 +93,25 @@ export default function SearchBar() {
     });
   });
 
+  // const onSearch = (value: string) => {
+  //   const filteredData = selectionData?.filter(
+  //     (item) =>
+  //       item.toLowerCase().includes(value.toLowerCase()) ||
+  //       item.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   setFilteredOptions(filteredData.slice(0, 10)); // Hiển thị 10 phần tử tìm được
+  // };
+
   const onSearch = (value: string) => {
-    const filteredData = selectionData.filter(
-      (item) =>
-        item.toLowerCase().includes(value.toLowerCase()) ||
+    // Kiểm tra rằng selectionData là một mảng trước khi lọc
+    if (Array.isArray(selectionData)) {
+      const filteredData = selectionData.filter((item) =>
         item.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredOptions(filteredData.slice(0, 10)); // Hiển thị 10 phần tử tìm được
+      );
+      setFilteredOptions(filteredData.slice(0, 10)); // Hiển thị 10 phần tử tìm được
+    } else {
+      setFilteredOptions([]); // Xử lý trường hợp không phải mảng
+    }
   };
 
   const onFinish = (values) => {
@@ -132,7 +147,7 @@ export default function SearchBar() {
   };
   return (
     <>
-      <div className="w-full p-4 h-20 bg-blue-900 flex justify-center sticky top-0 z-10 shadow-lg">
+      <div className="w-full p-4 h-20 bg-blue-900 flex justify-center sticky top-0 z-20 shadow-lg">
         <Row gutter={24} className="flex justify-center w-10/12">
           <Form
             form={form}
@@ -151,11 +166,15 @@ export default function SearchBar() {
                   //loading={loading}
                   filterOption={filterOption}
                 >
-                  {filteredOptions.map((item, index) => (
-                    <Option key={index} value={item}>
-                      <span className="font-semibold text-base">{item}</span>
-                    </Option>
-                  ))}
+                  {filteredOptions !== undefined ? (
+                    filteredOptions.map((item, index) => (
+                      <Option key={index} value={item}>
+                        <span className="font-semibold text-base">{item}</span>
+                      </Option>
+                    ))
+                  ) : (
+                    <span>NoData</span>
+                  )}
                 </Select>
               </Form.Item>
             </Col>

@@ -15,7 +15,7 @@ const checkOutValue = dayjs().add(1, "day").format("YYYY-MM-DD");
 const guestsValue = "1";
 const roomsValue = "1";
 
-export default function CardHotel() {
+const CardHotel = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -44,76 +44,80 @@ export default function CardHotel() {
             slidesToScroll={1}
             style={{ width: 1000, height: 400 }}
           >
-            {loading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <Col md={12} lg={6} xs={24} key={index} className="mt-3">
-                    <Card hoverable style={{ width: 240 }}>
-                      <Skeleton.Image style={{ width: 240, height: 150 }} />
-                      <Skeleton active paragraph={{ rows: 3 }} />
-                    </Card>
-                  </Col>
-                ))
-              : data.length > 0
-              ? data?.slice(0, 5).map((item) => (
-                  <Col md={12} lg={6} xs={24} key={item.id} className="mt-3">
-                    <Link
-                      href={{
-                        pathname: `/detail/${item.id}`,
-                        query: {
-                          search: item?.hotelName,
-                          checkIn: checkInValue,
-                          checkOut: checkOutValue,
-                          guests: guestsValue,
-                          rooms: roomsValue,
-                        },
-                      }}
+            {loading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <Col md={12} lg={6} xs={24} key={index} className="mt-3">
+                  <Card hoverable style={{ width: 240 }}>
+                    <Skeleton.Image style={{ width: 240, height: 150 }} />
+                    <Skeleton active paragraph={{ rows: 3 }} />
+                  </Card>
+                </Col>
+              ))
+            ) : data.length > 0 ? (
+              data?.slice(0, 5).map((item: any) => (
+                <Col md={12} lg={6} xs={24} key={item.id} className="mt-3">
+                  <Link
+                    href={{
+                      pathname: `/detail/${item.id}`,
+                      query: {
+                        search: item?.hotelName,
+                        checkIn: checkInValue,
+                        checkOut: checkOutValue,
+                        guests: guestsValue,
+                        rooms: roomsValue,
+                      },
+                    }}
+                  >
+                    <Card
+                      hoverable
+                      style={{ width: 240 }}
+                      cover={
+                        <Skeleton
+                          loading={loading}
+                          active
+                          avatar={{ shape: "square", size: "large" }}
+                        >
+                          <Image
+                            src={`http://localhost:8080${
+                              item.hotelImages.length > 0
+                                ? item.hotelImages[0].imageUrl
+                                : "/placeholder.jpg"
+                            }`}
+                            width={240}
+                            height={150}
+                            alt="title"
+                          />
+                        </Skeleton>
+                      }
                     >
-                      <Card
-                        hoverable
-                        style={{ width: 240 }}
-                        cover={
-                          <Skeleton
-                            loading={loading}
-                            active
-                            avatar={{ shape: "square", size: "large" }}
-                          >
-                            <Image
-                              src={`http://localhost:8080${
-                                item.hotelImages.length > 0
-                                  ? item.hotelImages[0].imageUrl
-                                  : "/placeholder.jpg"
-                              }`}
-                              width={240}
-                              height={150}
-                              alt="title"
-                            />
-                          </Skeleton>
-                        }
-                      >
-                        <Rate disabled defaultValue={item.hotelStars} />
-                        <div>
-                          <h1 className="font-bold text-lg">
-                            {item.hotelName}
-                          </h1>
-                          <p>{item.city}</p>
-                        </div>
-                        <strong>
-                          {formatNumber(
-                            item?.rooms?.reduce(
-                              (min, room) => Math.min(min, room.price),
-                              Infinity
-                            )
-                          )}
-                          /đêm
-                        </strong>
-                      </Card>
-                    </Link>
-                  </Col>
-                ))
-              : "No Data"}
+                      <Rate disabled defaultValue={item.hotelStars} />
+                      <div>
+                        <h1 className="font-bold text-lg">{item.hotelName}</h1>
+                        <p>{item.city}</p>
+                      </div>
+                      <strong>
+                        {formatNumber(
+                          item?.rooms?.reduce(
+                            (min, room) => Math.min(min, room.price),
+                            Infinity
+                          )
+                        )}
+                        /đêm
+                      </strong>
+                    </Card>
+                  </Link>
+                </Col>
+              ))
+            ) : (
+              <div>
+                <p>No data</p>
+              </div>
+            )}
           </Carousel>
         </Row>
       </div>
     </>
   );
-}
+};
+
+export default CardHotel;

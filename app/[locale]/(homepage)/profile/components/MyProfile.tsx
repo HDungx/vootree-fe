@@ -17,6 +17,7 @@ import axios from "axios";
 import moment from "moment";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/legacy/image";
+import { CustomJWT } from "@/utils/jwtCustom";
 const { Option } = Select;
 const { TabPane } = Tabs;
 
@@ -37,19 +38,27 @@ const beforeUpload = (file) => {
   }
   return isJpgOrPng && isLt2M;
 };
-
+interface UserInfo {
+  username: string;
+  email: string;
+  phoneNum: string;
+  firstName: string;
+  lastName: string;
+  dayOfBirth: any;
+  gender: string;
+}
 const MyProfile = () => {
   const [form] = Form.useForm();
   const [emailForm] = Form.useForm();
   const [phoneForm] = Form.useForm();
-  const [initialValues, setInitialValues] = useState(null);
+  const [initialValues, setInitialValues] = useState<UserInfo>();
   const [tokenKey, setTokenKey] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<CustomJWT>(token);
 
       setTokenKey(decodedToken.id);
       console.log(decodedToken.id);

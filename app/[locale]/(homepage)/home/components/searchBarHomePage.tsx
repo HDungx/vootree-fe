@@ -44,9 +44,10 @@ const filterOption = (input, option) => {
     option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
   );
 };
+
 export default function SearchBarHome() {
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [selectionData, setSelectionData] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
+  const [selectionData, setSelectionData] = useState<string[]>([]);
   const [form] = Form.useForm();
   const t = useTranslations();
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function SearchBarHome() {
         const filteredHotelName = data.map((item) => item.hotelName);
         const citySet = new Set(data.map((item) => item.city));
         const hotelCities = [...citySet];
-        const combinedData = hotelCities.concat(filteredHotelName);
+        const combinedData = hotelCities.concat(filteredHotelName) as string[];
         setSelectionData(combinedData);
         setFilteredOptions(combinedData.slice(0, 10));
       } catch (error) {
@@ -87,10 +88,8 @@ export default function SearchBarHome() {
   });
 
   const onSearch = (value: string) => {
-    const filteredData = selectionData.filter(
-      (item) =>
-        item.toLowerCase().includes(value.toLowerCase()) ||
-        item.toLowerCase().includes(value.toLowerCase())
+    const filteredData = selectionData.filter((item: any) =>
+      item.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredOptions(filteredData.slice(0, 10)); // Hiển thị 10 phần tử tìm được
   };

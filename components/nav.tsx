@@ -17,6 +17,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 import LanguageSwitcher from "./language-switcher";
 import { useTranslations } from "next-intl";
+import SearchBarHome from "@/app/[locale]/(homepage)/home/components/searchBarHomePage";
 
 export default function NavbarHome({ logo, bg }) {
   const [username, setUsername] = useState();
@@ -105,6 +106,7 @@ export default function NavbarHome({ logo, bg }) {
                   <div className="flex justify-center gap-1">
                     <div className="hidden sm:ml-6 sm:block ">
                       <div className="flex space-x-1">
+                        <LanguageSwitcher />
                         <Link
                           prefetch
                           href="/partner/signup"
@@ -210,7 +212,8 @@ export default function NavbarHome({ logo, bg }) {
       </div>
       <hr className="max-w-4xl mx-auto justify-center mt-4 border" /> */}
       {/* <div className="max-w-3xl h-56 bg-white mx-auto mt-6 border border-gray-400 rounded-lg ">
-        <SearchBar />
+        
+      <SearchBarHome />
       </div> */}
     </header>
   );

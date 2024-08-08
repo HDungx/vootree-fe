@@ -35,7 +35,7 @@ export default function Layouts({ children }: { children: React.ReactNode }) {
         ) : (
           <>
             <header>
-              <NavbarHome bg={styles.header} logo="/logo_preview_rev_2.png" />
+              {/* <NavbarHome bg={styles.header} logo="/logo_preview_rev_2.png" /> */}
               <div className="w-full">
                 <SearchBarHome />
               </div>

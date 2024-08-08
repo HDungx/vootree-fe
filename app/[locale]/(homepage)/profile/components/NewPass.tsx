@@ -4,20 +4,18 @@ import { Form, Input, Button, message } from "antd";
 import axios from "axios";
 import "tailwindcss/tailwind.css";
 import { jwtDecode } from "jwt-decode";
-
+import { CustomJWT } from "@/utils/jwtCustom";
 
 export default function NewPass() {
-
   const [tokenKey, setTokenKey] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<CustomJWT>(token);
       setTokenKey(decodedToken.id);
     }
   }, []);
-
 
   const onFinish = (values) => {
     axios
@@ -31,8 +29,7 @@ export default function NewPass() {
         // Xử lý các công việc khác sau khi thành công nếu cần
       })
       .catch((error) => {
-        
-          message.error(error.response.data.message);
+        message.error(error.response.data.message);
         // Xử lý lỗi khi không thể thay đổi mật khẩu
         console.error("Error:", error.response.data.message);
       });

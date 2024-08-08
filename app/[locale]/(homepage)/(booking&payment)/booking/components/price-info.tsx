@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { CustomJWT } from "@/utils/jwtCustom";
 export default function PriceInfo({
   roomData,
   rooms,
@@ -42,7 +43,7 @@ export default function PriceInfo({
 
     if (token) {
       try {
-        const decode = jwtDecode(token);
+        const decode = jwtDecode<CustomJWT>(token);
         const userId = decode?.user_id;
         const role = decode?.roles[0];
         console.log(userId, role);
@@ -132,9 +133,9 @@ export default function PriceInfo({
     const checkIn = checkInDate;
     const checkOut = checkOutDate;
     const paymentValues = {
-      amount: totalPrice.toString(),
-      bookingId: bookingId,
-      userId: checkToken()?.userId,
+      amount: totalPrice.toString() || "",
+      bookingId: bookingId || "",
+      userId: checkToken()?.userId || "",
     };
     const paymentObject = {
       amount: totalPrice.toString(),

@@ -67,7 +67,7 @@ interface HotelData {
 }
 
 const Index = ({ checkedValues, priceRange }) => {
-  const [data, setData] = useState<HotelData | null>(null); // Lưu trữ dữ liệu bài đăng
+  const [data, setData] = useState<HotelData[] | null>(null); // Lưu trữ dữ liệu bài đăng
   const [visibleData, setVisibleData] = useState<HotelData[]>([]); // Lưu trữ dữ liệu hiển thị
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true); // Flag kiểm tra còn dữ liệu
@@ -144,7 +144,7 @@ const Index = ({ checkedValues, priceRange }) => {
       );
     }
 
-    setVisibleData(filteredData.slice(0, pageSize));
+    setVisibleData(filteredData?.slice(0, pageSize));
   }, [checkedValues, priceRange, data]);
   // Sort data
   const handleSort = (sortBy, order) => {
@@ -221,7 +221,7 @@ const Index = ({ checkedValues, priceRange }) => {
   //Load more data
   const handleLoadMore = async () => {
     if (hasMoreData) {
-      const newData = data?.slice(
+      const newData = (data ?? []).slice(
         visibleData.length,
         visibleData.length + pageSize
       );

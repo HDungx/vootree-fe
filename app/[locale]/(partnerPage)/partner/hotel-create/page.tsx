@@ -1092,7 +1092,9 @@ const MultiStepForm = () => {
         <div className="ms-96 mt-10">
           <span className="font-bold text-2xl ">Đăng ký chỗ nghỉ</span>
         </div>
-        <Row style={{ height: "500px" }}>
+        <Row
+        //style={{ height: "500px" }}
+        >
           <Col
             span={6}
             className="justify-center flex mt-10 ps-20"

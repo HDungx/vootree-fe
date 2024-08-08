@@ -44,11 +44,11 @@ interface HotelData {
   listRating: any[]; // Placeholder for any type
 }
 
-interface HotelInfoProps {
-  data: HotelData;
-}
+// interface HotelInfoProps {
+//   data: HotelData;
+// }
 
-export default function HotelInfo({ data }: HotelInfoProps) {
+export default function HotelInfo({ data }) {
   const [img, setImg] = useState<string[]>([]);
 
   useEffect(() => {

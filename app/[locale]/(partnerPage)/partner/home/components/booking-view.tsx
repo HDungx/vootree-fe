@@ -7,8 +7,8 @@ const { Option } = Select;
 export default function BookingView() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [hotelNames, setHotelNames] = useState([]);
-  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [hotelNames, setHotelNames] = useState<string[]>([]);
+  const [selectedHotel, setSelectedHotel] = useState<string>();
   const [bookingCount, setBookingCount] = useState(0);
   const [guestCount, setGuestCount] = useState(0);
   const [roomCount, setRoomCount] = useState(0);
@@ -25,9 +25,9 @@ export default function BookingView() {
         }));
         setData(allData);
         setFilteredData(allData);
-        const uniqueHotelNames = [
-          ...new Set(allData.map((item) => item.hotelName)),
-        ];
+        const uniqueHotelNames = Array.from(
+          new Set(allData.map((item) => item.hotelName))
+        ) as string[];
         setHotelNames(uniqueHotelNames);
         // Tính toán các số liệu thống kê
         calculateStatistics(allData);
@@ -64,7 +64,7 @@ export default function BookingView() {
       setFilteredData(data);
       calculateStatistics(data);
     } else {
-      const filtered = data.filter((item) => item.hotelName === value);
+      const filtered = data.filter((item: any) => item.hotelName === value);
       setFilteredData(filtered);
       calculateStatistics(filtered);
     }
