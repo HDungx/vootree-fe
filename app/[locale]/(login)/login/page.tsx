@@ -1,19 +1,19 @@
 "use client";
-import { Button, Form, Input, message } from "antd";
-import React, { useEffect, useState } from "react";
 import {
+  FacebookOutlined,
+  GoogleOutlined,
   LockOutlined,
   UserOutlined,
-  GoogleOutlined,
-  FacebookOutlined,
 } from "@ant-design/icons";
+import { Button, Form, Input, message } from "antd";
+import axios from "axios";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import axios from "axios";
+import { useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
 import { CustomJWT } from "@/utils/jwtCustom";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
 export default function Page() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState(false);
@@ -50,33 +50,34 @@ export default function Page() {
       }
     } catch (error) {
       console.error(error);
+      message.error("Sai tài khoản hoặc mật khẩu!");
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/oauth2/authorization/google`
-      );
-      localStorage.setItem("token", response.data.token);
-      const decodeToken = jwtDecode<CustomJWT>(response.data.token);
-      const tokenRole = decodeToken?.roles;
-      if (tokenRole[0] == "PARTNER") {
-        router.push("/partner/home");
-      } else if (tokenRole[0] == "CUSTOMER") {
-        const redirectToBooking = localStorage.getItem("bookingHref");
-        if (redirectToBooking) {
-          localStorage.removeItem("bookingHref");
-          router.push(redirectToBooking);
-        } else {
-          router.push("/home");
-        }
-      }
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8080/oauth2/authorization/google`
+  //     );
+  //     localStorage.setItem("token", response.data.token);
+  //     const decodeToken = jwtDecode<CustomJWT>(response.data.token);
+  //     const tokenRole = decodeToken?.roles;
+  //     if (tokenRole[0] == "PARTNER") {
+  //       router.push("/partner/home");
+  //     } else if (tokenRole[0] == "CUSTOMER") {
+  //       const redirectToBooking = localStorage.getItem("bookingHref");
+  //       if (redirectToBooking) {
+  //         localStorage.removeItem("bookingHref");
+  //         router.push(redirectToBooking);
+  //       } else {
+  //         router.push("/home");
+  //       }
+  //     }
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div>
@@ -214,8 +215,8 @@ export default function Page() {
               </p>
               <div className="flex justify-center mt-2">
                 <a
-                  onClick={handleGoogleLogin}
-                  // href="http://localhost:8080/oauth2/authorization/google"
+                  //onClick={() => signIn("google")}
+                  href="http://localhost:8080/oauth2/authorization/google"
                   className="text-sm font-medium text-gray-700 hover:text-sky-600 mr-4 flex items-center"
                 >
                   <GoogleOutlined className="mr-1" />

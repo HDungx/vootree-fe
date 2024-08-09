@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
-import "./globals.css";
+
 import Layout from "@/components/Navlayout";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,21 +23,10 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className={inter.className}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {/* <HeaderLayout /> */}
-          {/* <LanguageSwitcher locale={locale} /> */}
-          {/* <Layout
-          // className=" bg-gray-50"
-          >
-          </Layout> */}
-          {children}
-          {/* <footer>
-          <Footer />
-        </footer> */}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <Layout
+    // className=" bg-gray-50"
+    >
+      {children}
+    </Layout>
   );
 }

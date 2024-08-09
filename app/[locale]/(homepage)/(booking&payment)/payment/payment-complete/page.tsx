@@ -28,6 +28,8 @@ export default function Page() {
   const [bookingInfo, setBookingInfo] = useState<BookingInfo>();
   const [emailReceipt, setEmailReceipt] = useState({});
   const [partnerEmail, setPartnerEmail] = useState();
+  const [countdown, setCountdown] = useState(10);
+
   useEffect(() => {
     const localStorageValues = localStorage.getItem("bookingInfo") || "";
     const data = JSON.parse(localStorageValues);
@@ -84,7 +86,23 @@ export default function Page() {
     setUserInfo(userInfo);
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prevCountdown) => prevCountdown - 1);
+    }, 1000);
+
+    // Chuyển hướng sau 10 giây
+    const timer = setTimeout(() => {
+      localStorage.removeItem("bookingData");
+      window.location.href = "/home";
+    }, 10000);
+
+    // Dọn dẹp interval và timeout khi component bị unmount
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  });
 
   useEffect(() => {
     const param = new URLSearchParams(paymentValues).toString();
@@ -119,8 +137,6 @@ export default function Page() {
       currency: "VND",
     }).format(value);
   };
-
-  const handleDeleteBookingInfo = () => {};
 
   return (
     <>
@@ -208,9 +224,9 @@ export default function Page() {
               <Link
                 href={"/home"}
                 className="text-blue-500 text-xl font-semibold hover:text-blue-400 hover:underline"
-                onClick={handleDeleteBookingInfo}
+                //onClick={handleDeleteBookingInfo}
               >
-                Về trang chủ
+                Về trang chủ {countdown}
               </Link>
             </div>
           </div>
