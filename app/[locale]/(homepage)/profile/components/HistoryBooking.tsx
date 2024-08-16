@@ -15,6 +15,8 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
+import { OpenAI } from "openai";
+
 const { TextArea } = Input;
 export default function HistoryBooking() {
   const [form] = Form.useForm();
@@ -87,40 +89,53 @@ export default function HistoryBooking() {
     setIsModalOpen(false);
   };
 
-  const onFinish = (values) => {
-    // Xử lý khi submit form
+  const onFinish = async (values) => {
     const toDay = dayjs().format("YYYY-MM-DD");
-    form
-      .validateFields()
-      .then(async (values) => {
+    form.validateFields().then(async (values) => {
+      try {
         const submitValues = { ...values, hotelId, toDay, userId, bookingId };
-        try {
-          const response = await axios.post(
-            "http://localhost:8080/api/ratings",
-            submitValues
-          );
-          console.log(values);
 
-          if (response.status === 200) {
-            message.success("Đánh giá thành công!");
-            const changeReviewStatus = axios.put(
-              `http://localhost:8080/api/bookings/update/review-status/${bookingId}`
-            );
-          }
-        } catch (error) {
-          message.error("Thêm thất bại!");
+        // Tạo đối tượng OpenAI trực tiếp với API key
+        const openai = new OpenAI({
+          apiKey:
+            "sk-SL4qXLcialx0UO5wwPWi4ItjSQPzDCfSMk8PeYXA2oT3BlbkFJT5I9o4UXpVY-tgoO07CLEkHcF1oabIkhvKRjcRXUIA",
+          dangerouslyAllowBrowser: true,
+        });
+
+        // Gọi API kiểm tra nội dung review
+        const reviewCheckResponse = await openai.completions.create({
+          model: "gpt-3.5-turbo",
+          prompt: `Check if the following review contains sensitive information: ${submitValues.comment}`,
+          max_tokens: 50,
+        });
+
+        const reviewCheckResult = reviewCheckResponse.choices[0].text.trim();
+
+        if (reviewCheckResult.includes("Sensitive")) {
+          message.error("Nội dung đánh giá có chứa thông tin nhạy cảm!");
+          console.log("Nội dung đánh giá có chứa thông tin nhạy cảm!");
+          return;
         }
-        console.log(submitValues);
 
-        console.log("Received values from form:", values);
-        // Thực hiện các xử lý tiếp theo, ví dụ như gửi dữ liệu lên server
-        setIsModalOpen(false); // Đóng Modal sau khi xử lý xong
-      })
-      .catch((errorInfo) => {
-        console.log("Validation failed:", errorInfo);
-      });
-    // Đóng Modal
-    //setIsModalOpen(false);
+        // Nếu không có thông tin nhạy cảm, tiếp tục xử lý
+        const response = await axios.post(
+          "http://localhost:8080/api/ratings",
+          submitValues
+        );
+
+        if (response.status === 200) {
+          message.success("Đánh giá thành công!");
+          await axios.put(
+            `http://localhost:8080/api/bookings/update/review-status/${bookingId}`
+          );
+        }
+      } catch (error) {
+        message.error("Thêm thất bại!");
+        console.log(error);
+      }
+
+      setIsModalOpen(false); // Đóng Modal sau khi xử lý xong
+    });
   };
   return (
     <div>

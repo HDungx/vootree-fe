@@ -1,4 +1,7 @@
 "use client";
+import withAuth from "@/components/withAuth";
+import { InboxOutlined } from "@ant-design/icons";
+import type { UploadFile, UploadProps } from "antd";
 import {
   Button,
   Checkbox,
@@ -14,19 +17,14 @@ import {
   Select,
   Steps,
   TimePicker,
+  Upload,
   message,
 } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { Upload } from "antd";
-import { format } from "date-fns";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import type { UploadFile } from "antd";
-import type { UploadProps } from "antd";
-import withAuth from "@/components/withAuth";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 const { Dragger } = Upload;
 
 const formats = "HH:mm";
@@ -42,6 +40,8 @@ const MultiStepForm = () => {
   const [userId, setUserId] = useState();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [roomList, setRoomList] = useState<UploadFile[]>([]);
+  const [roomTypes, setRoomTypes] = useState([]);
+  const [provinces, setProvinces] = useState([]);
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -50,6 +50,18 @@ const MultiStepForm = () => {
       setUserId(decode?.user_id);
     }
 
+    const getProvince = async () => {
+      const response = await axios.get(
+        "https://vapi.vnappmob.com/api/province/"
+      );
+      const data = response.data.results;
+      setProvinces(data);
+    };
+    const getRoomType = async () => {
+      const response = await axios.get("http://localhost:8080/api/roomTypes");
+      const data = response.data;
+      setRoomTypes(data);
+    };
     const getFacilities = async () => {
       const response = await fetch("http://localhost:8080/api/facilities"); // API backend trả về toàn bộ giá trị
       const allData = await response.json();
@@ -58,6 +70,8 @@ const MultiStepForm = () => {
       );
       setRoomFacilities(allData.filter((item: any) => item.facType === "ROOM"));
     };
+    getProvince();
+    getRoomType();
     getFacilities();
   }, []);
 
@@ -179,7 +193,6 @@ const MultiStepForm = () => {
     const roomFacilitiesOject = formData.roomFacilities.map((num) => ({
       facilityId: num,
     }));
-    console.log(hotelFacilitiesObject);
 
     const filteredHotel = {
       hotelName: formData.hotelName,
@@ -188,10 +201,11 @@ const MultiStepForm = () => {
       checkOutTime: formatCheckOutTime,
       city: formData.city,
       hotelDescription: formData.description,
-      hotelPhoneNum: formData.hotelPhoneNum,
+      hotelPhoneNum: `${formData.hotelPhoneNum}`,
       hotelStars: formData.stars,
       status: formData.status,
-      accommodationTypeId: formData.propertyType,
+      // edit_status: "CREATE",
+      accommodationTypeId: formData.propertyType.id,
       userId: userId,
       hotelFacilities: hotelFacilitiesObject,
       rooms: [
@@ -202,14 +216,14 @@ const MultiStepForm = () => {
           roomSize: formData.roomSize,
           description: formData.description,
           serveBreakfast: formData.breakfast,
-          roomTypeId: formData.roomType,
+          roomTypeId: +formData.roomType,
           roomFacilities: roomFacilitiesOject,
         },
       ],
     };
 
-    console.log(filteredHotel);
-
+    console.log("FilteredHotel:", filteredHotel);
+    console.log("accomodation", formData.propertyType);
     try {
       const response = await axios.post(
         "http://localhost:8080/api/hotels",
@@ -292,6 +306,7 @@ const MultiStepForm = () => {
     } catch (error) {
       console.error("Failed to submit data:", error);
       message.error("Failed to submit data");
+      console.log(filteredHotel);
     }
   };
 
@@ -628,20 +643,10 @@ const MultiStepForm = () => {
                           placeholder="Chọn tỉnh/thành phố"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={[
-                            {
-                              value: "Hồ Chí Minh",
-                              label: "Hồ Chí Minh",
-                            },
-                            {
-                              value: "Đà Lạt",
-                              label: "Đà Lạt",
-                            },
-                            {
-                              value: "Vũng Tàu",
-                              label: "Vũng Tàu",
-                            },
-                          ]}
+                          options={(provinces || []).map((item) => ({
+                            value: item.province_name,
+                            label: item.province_name,
+                          }))}
                         />
                       </Form.Item>
                     </Col>
@@ -801,20 +806,10 @@ const MultiStepForm = () => {
                       optionFilterProp="children"
                       filterOption={filterOption}
                       size="large"
-                      options={[
-                        {
-                          value: "1",
-                          label: "Phòng Delux",
-                        },
-                        {
-                          value: "2",
-                          label: "Phòng thường",
-                        },
-                        {
-                          value: "3",
-                          label: "Phòng VIP",
-                        },
-                      ]}
+                      options={roomTypes?.map((item) => ({
+                        value: item.id,
+                        label: item.typeName,
+                      }))}
                     />
                   </Form.Item>
                   <Form.Item

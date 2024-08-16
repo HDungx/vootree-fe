@@ -25,7 +25,7 @@
     "noImplicitAny": false,
     "typeRoots": ["./node_modules/@types", "./utils/type.d.ts"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/withAuth.js", "app/[locale]/(staffPage)/staff/components/Bookings.jsx",],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/withAuth.js", "app/[locale]/(staffPage)/staff/components/Bookings.jsx", "apis/reviewAPI.js", "apis/reviewCheck.js",],
   "exclude": ["node_modules"]
   
 }

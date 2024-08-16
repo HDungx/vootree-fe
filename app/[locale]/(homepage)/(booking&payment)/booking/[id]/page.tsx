@@ -48,12 +48,12 @@ const Homepage = ({ params }: { params: { id: string } }) => {
       const response = await fetch(`http://localhost:8080/api/rooms/${id}`); // API backend trả về toàn bộ giá trị
       const allData = await response.json();
       setRoomData(allData); // Lưu trữ toàn bộ dữ liệu
-      if (response.status === 200) {
-        const response = await axios.get(
-          `http://localhost:8080/api/hotels/info/${id}`
-        );
-        setHotelData(response.data);
-      }
+      //if (response.status === 200) {
+      const response2 = await axios.get(
+        `http://localhost:8080/api/hotels/info/${id}`
+      );
+      setHotelData(response2.data);
+      //}
     };
     fetchData();
     setCheckInValue(checkInValue);
