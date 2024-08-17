@@ -42,6 +42,8 @@ type FieldType = {
   guests?: number;
   rooms?: number;
 };
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 
 export default function SearchBar() {
   const [options, setOptions] = useState([]);
@@ -53,7 +55,7 @@ export default function SearchBar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/hotels");
+        const response = await axios.get(`${url_deploy}/api/hotels`);
         const data = response.data;
         // const filteredHotelName = data.map((item) => item.hotelName);
         // const citySet = new Set(data.map((item) => item.city));

@@ -3,7 +3,8 @@ import { Row, Col, Card, Statistic } from "antd";
 import axios from "axios";
 import StatisticsRevenue from "./StatisticsRevenue";
 import HotelStatusDoughnutChart from "./HotelStatusDoughnutChart";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const Dashboard = () => {
   const [customersCount, setCustomersCount] = useState(0);
   const [partnersCount, setPartnersCount] = useState(0);
@@ -15,7 +16,7 @@ const Dashboard = () => {
       try {
         // Fetch user data
         const responseUsers = await axios.get(
-          "http://localhost:8080/api/accounts"
+          `${url_deploy}/api/accounts`
         );
         const users = responseUsers.data;
 
@@ -38,7 +39,7 @@ const Dashboard = () => {
       try {
         // Fetch hotels data
         const responseHotels = await axios.get(
-          "http://localhost:8080/api/hotels"
+          `${url_deploy}/api/hotels`
         );
         const hotels = responseHotels.data;
 
@@ -53,7 +54,7 @@ const Dashboard = () => {
       try {
         // Fetch booking data
         const responseBookings = await axios.get(
-          "http://localhost:8080/api/bookings"
+          `${url_deploy}/api/bookings`
         );
         const bookings = responseBookings.data;
 

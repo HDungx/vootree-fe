@@ -46,10 +46,11 @@ export default function Tables({
   const [selectedRow, setSelectedRow] = useState<any | null>(null);
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-
+  const url_deploy = "https://vootreeveevuu.up.railway.app";
+  const url_local = "http://localhost:8080";
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/rooms")
+      .get(`${url_deploy}/api/rooms`)
       .then((response) => {
         const fetchedData = response.data.map((item: any, index: number) => ({
           key: item.id,

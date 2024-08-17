@@ -66,6 +66,9 @@ interface HotelData {
   ratings: any[]; // Placeholder for any type
 }
 
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
+
 const Index = ({ checkedValues, priceRange }) => {
   const [data, setData] = useState<HotelData[] | null>(null); // Lưu trữ dữ liệu bài đăng
   const [visibleData, setVisibleData] = useState<HotelData[]>([]); // Lưu trữ dữ liệu hiển thị
@@ -88,19 +91,16 @@ const Index = ({ checkedValues, priceRange }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/hotels/search",
-          {
-            params: {
-              city: searchValue,
-              hotelName: searchValue,
-              capacity: guestsValue,
-              checkinDate: checkInValue,
-              checkoutDate: checkOutValue,
-              rooms: roomsValue,
-            },
-          }
-        ); // API backend trả về toàn bộ giá trị
+        const response = await axios.get(`${url_deploy}/api/hotels/search`, {
+          params: {
+            city: searchValue,
+            hotelName: searchValue,
+            capacity: guestsValue,
+            checkinDate: checkInValue,
+            checkoutDate: checkOutValue,
+            rooms: roomsValue,
+          },
+        }); // API backend trả về toàn bộ giá trị
 
         const allData = await response.data;
         if (allData.length === 0) {
@@ -297,7 +297,7 @@ const Index = ({ checkedValues, priceRange }) => {
                       >
                         <Col span={6} className="">
                           <Image
-                            src={`http://localhost:8080${
+                            src={`${url_deploy}${
                               item.hotelImages.length > 0
                                 ? item.hotelImages[0].imageUrl
                                 : "/placeholder.jpg"

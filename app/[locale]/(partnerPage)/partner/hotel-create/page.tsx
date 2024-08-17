@@ -26,7 +26,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 const { Dragger } = Upload;
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const formats = "HH:mm";
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -58,12 +59,12 @@ const MultiStepForm = () => {
       setProvinces(data);
     };
     const getRoomType = async () => {
-      const response = await axios.get("http://localhost:8080/api/roomTypes");
+      const response = await axios.get(`${url_deploy}/api/roomTypes`);
       const data = response.data;
       setRoomTypes(data);
     };
     const getFacilities = async () => {
-      const response = await fetch("http://localhost:8080/api/facilities"); // API backend trả về toàn bộ giá trị
+      const response = await fetch(`${url_deploy}/api/facilities`); // API backend trả về toàn bộ giá trị
       const allData = await response.json();
       setHotelFacilities(
         allData.filter((item: any) => item.facType === "HOTEL")
@@ -226,7 +227,7 @@ const MultiStepForm = () => {
     console.log("accomodation", formData.propertyType);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/hotels",
+        `${url_deploy}/api/hotels`,
         filteredHotel
       );
       message.success("Bạn đã đăng kí thành công!");
@@ -234,7 +235,7 @@ const MultiStepForm = () => {
       // Sau khi tạo thành công, thực hiện một yêu cầu GET để lấy danh sách khách sạn
       if (response.status === 200 || response.status === 201) {
         const getHotelsResponse = await axios.get(
-          "http://localhost:8080/api/hotels"
+          `${url_deploy}/api/hotels`
         );
 
         const hotels = getHotelsResponse.data;
@@ -262,7 +263,7 @@ const MultiStepForm = () => {
 
             // Upload new files for hotel
             await axios.post(
-              `http://localhost:8080/api/hotels/${hotelId}/images`,
+              `${url_deploy}/api/hotels/${hotelId}/images`,
               formData,
               {
                 headers: {
@@ -286,7 +287,7 @@ const MultiStepForm = () => {
 
             // Upload new files for room
             await axios.post(
-              `http://localhost:8080/api/rooms/${roomId}/images`,
+              `${url_deploy}/api/rooms/${roomId}/images`,
               formData2,
               {
                 headers: {

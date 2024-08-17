@@ -9,6 +9,8 @@ interface BookingData {
   data: any; // Thay thế 'any' bằng kiểu dữ liệu chính xác nếu có thể
   expiration: any; // Thay thế 'any' bằng kiểu dữ liệu chính xác nếu có thể
 }
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const MyBooking = () => {
   const [bookings, setBookings] = useState<BookingData[]>([]);
 
@@ -99,7 +101,7 @@ const MyBooking = () => {
     const queryString = new URLSearchParams(paymentValues).toString();
     try {
       const payment = await axios.post(
-        `http://localhost:8080/api/payment/create?${queryString}`
+        `${url_deploy}/api/payment/create?${queryString}`
       );
 
       console.log(payment.data.data);

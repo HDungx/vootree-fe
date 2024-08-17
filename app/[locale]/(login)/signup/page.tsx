@@ -54,7 +54,8 @@ const tailFormItemLayout = {
 };
 
 const dateFormatList = ["DD/MM/YYYY", "DD-MM-YYYY"];
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function Page() {
   const router = useRouter();
   const [form] = Form.useForm();
@@ -64,7 +65,7 @@ export default function Page() {
     const newValues = { ...values, role };
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        `${url_deploy}/api/auth/register`,
         newValues
       );
       if (response.status === 200) {

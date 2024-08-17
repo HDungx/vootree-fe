@@ -21,7 +21,8 @@ import axios from "axios";
 import "tailwindcss/tailwind.css";
 import { useRouter } from "next/navigation";
 const { Option } = Select;
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -65,7 +66,7 @@ const SignupPartner = () => {
     console.log(newValues);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        `${url_deploy}/api/auth/register`,
         newValues
       );
 

@@ -5,7 +5,8 @@ import axios from "axios";
 import "tailwindcss/tailwind.css";
 import { jwtDecode } from "jwt-decode";
 import { CustomJWT } from "@/utils/jwtCustom";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function NewPass() {
   const [tokenKey, setTokenKey] = useState(null);
 
@@ -19,7 +20,7 @@ export default function NewPass() {
 
   const onFinish = (values) => {
     axios
-      .put(`http://localhost:8080/api/accounts/${tokenKey}/change-pass`, {
+      .put(`${url_deploy}/api/accounts/${tokenKey}/change-pass`, {
         oldPassword: values.currentPassword,
         newPassword: values.newPassword,
         confPassword: values.confirmPassword,

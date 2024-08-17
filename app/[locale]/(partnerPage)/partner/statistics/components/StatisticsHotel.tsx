@@ -4,7 +4,8 @@ import { Line } from "react-chartjs-2";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "chart.js/auto";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const StatisticsHotel = () => {
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedHotel, setSelectedHotel] = useState("");
@@ -25,7 +26,7 @@ const StatisticsHotel = () => {
         const userId = decodedToken.id;
 
         // Gọi API để lấy toàn bộ danh sách khách sạn
-        const response = await axios.get("http://localhost:8080/api/hotels");
+        const response = await axios.get(`${url_deploy}/api/hotels`);
         const hotels = response.data;
 
         // Lọc danh sách khách sạn dựa trên userId
@@ -58,7 +59,7 @@ const StatisticsHotel = () => {
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.id;
 
-        const response = await axios.get("http://localhost:8080/api/bookings");
+        const response = await axios.get(`${url_deploy}/api/bookings`);
         const bookings = response.data;
 
         // Lọc danh sách đặt phòng theo hotelOwnerId và selectedHotel

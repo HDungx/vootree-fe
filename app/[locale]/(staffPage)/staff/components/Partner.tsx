@@ -79,7 +79,8 @@ const EditableCell = ({
     </td>
   );
 };
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const Partner = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -91,7 +92,7 @@ const Partner = () => {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/accounts");
+        const response = await axios.get(`${url_deploy}/api/accounts`);
         const fetchedData = response.data
         .filter(item => item.roles.some(role => role.name === "PARTNER")) // Lọc các tài khoản có role là "CUSTOMER"
         .map((item, index) => ({
@@ -135,8 +136,8 @@ const Partner = () => {
       const row1 = await form.validateFields();
       const row = {...row1, id: key};
       console.log(row);
-      console.log(`Saving data for key ${key} to:`, `http://localhost:8080/api/accounts/update/${key}`);
-      await axios.put(`http://localhost:8080/api/accounts/update/${key}`, row);
+      console.log(`Saving data for key ${key} to:`, `${url_deploy}/api/accounts/update/${key}`);
+      await axios.put(`${url_deploy}/api/accounts/update/${key}`, row);
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {

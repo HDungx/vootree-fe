@@ -6,7 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 const { Step } = Steps;
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const ForgotPass = () => {
   const [current, setCurrent] = useState(0);
   const [form1] = Form.useForm();
@@ -22,7 +23,7 @@ const ForgotPass = () => {
         setEmail(values.email);
         axios
           .post(
-            `http://localhost:8080/api/password/forgot?email=${values.email}`
+            `${url_deploy}/api/password/forgot?email=${values.email}`
           )
           .then((response) => {
             message.success("Gửi OTP thành công");
@@ -43,7 +44,7 @@ const ForgotPass = () => {
     const { newPassword, confirmPassword, otp } = values;
     axios
       .post(
-        `http://localhost:8080/api/password/reset?email=${email}&newPassword=${newPassword}&otp=${otp}`
+        `${url_deploy}/api/password/reset?email=${email}&newPassword=${newPassword}&otp=${otp}`
       )
       .then((response) => {
         message.success("Đặt lại mật khẩu thành công!");

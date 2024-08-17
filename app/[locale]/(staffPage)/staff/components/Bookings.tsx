@@ -79,7 +79,8 @@ import axios from "axios";
 //     </td>
 //   );
 // };
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const Bookings = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -91,7 +92,7 @@ const Bookings = () => {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/bookings");
+        const response = await axios.get(`${url_deploy}/api/bookings`);
         const fetchedData = response.data
         .map((item, index) => ({
           key: item.id.toString(),
@@ -141,8 +142,8 @@ const Bookings = () => {
   //     const row1 = await form.validateFields();
   //     const row = {...row1, id: key};
   //     console.log(row);
-  //     console.log(`Saving data for key ${key} to:`, `http://localhost:8080/api/accounts/update/${key}`);
-  //     await axios.put(`http://localhost:8080/api/accounts/update/${key}`, row);
+  //     console.log(`Saving data for key ${key} to:`, `${url_deploy}/api/accounts/update/${key}`);
+  //     await axios.put(`${url_deploy}/api/accounts/update/${key}`, row);
   //     const newData = [...data];
   //     const index = newData.findIndex((item) => key === item.key);
   //     if (index > -1) {

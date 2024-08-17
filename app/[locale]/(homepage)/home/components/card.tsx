@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Card, Carousel, Col, Rate, Row, Skeleton, Spin, message } from "antd";
+import "@/app/[locale]/(homepage)/home/style.module.css";
+import { Card, Carousel, Col, Rate, Row, Skeleton, message } from "antd";
+import dayjs from "dayjs";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import "@/app/[locale]/(homepage)/home/style.module.css";
-import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 const formatNumber = (number) => {
   return number.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
@@ -14,14 +14,15 @@ const checkInValue = dayjs().format("YYYY-MM-DD");
 const checkOutValue = dayjs().add(1, "day").format("YYYY-MM-DD");
 const guestsValue = "1";
 const roomsValue = "1";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const CardHotel = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/hotels`); // API backend trả về toàn bộ giá trị
+        const response = await fetch(`${url_deploy}/api/hotels`); // API backend trả về toàn bộ giá trị
         const allData = await response.json();
         setData(allData); // Lưu trữ toàn bộ dữ liệu
       } catch (error) {
@@ -78,7 +79,7 @@ const CardHotel = () => {
                           avatar={{ shape: "square", size: "large" }}
                         >
                           <Image
-                            src={`http://localhost:8080${
+                            src={`${url_deploy}${
                               item.hotelImages.length > 0
                                 ? item.hotelImages[0].imageUrl
                                 : "/placeholder.jpg"

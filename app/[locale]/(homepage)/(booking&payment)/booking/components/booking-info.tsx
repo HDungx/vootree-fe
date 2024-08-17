@@ -24,7 +24,8 @@ export default function BookingInfo({
   const [bookingPrice, setBookingPrice] = useState(0);
   const [tax, setTax] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const url_deploy = "https://vootreeveevuu.up.railway.app";
+  const url_local = "http://localhost:8080";
   useEffect(() => {
     const formatCheckInDate = dayjs(checkInValue).format("DD/MM/YYYY");
     const formatCheckOutDate = dayjs(checkOutValue).format("DD/MM/YYYY");
@@ -45,7 +46,7 @@ export default function BookingInfo({
       <Row className="h-24 ">
         <Col span={8}>
           <Image
-            src={`http://localhost:8080${hotelImages?.imageUrl}`}
+            src={`${url_deploy}${hotelImages?.imageUrl}`}
             alt=""
             // width={170}
             // height={110}

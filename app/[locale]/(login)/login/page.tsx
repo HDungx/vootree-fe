@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { CustomJWT } from "@/utils/jwtCustom";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function Page() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState(false);
@@ -25,7 +27,7 @@ export default function Page() {
   const onFinish = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        `${url_deploy}/api/auth/login`,
         values
       );
       if (response.status === 200) {
@@ -57,7 +59,7 @@ export default function Page() {
   // const handleGoogleLogin = async () => {
   //   try {
   //     const response = await axios.get(
-  //       `http://localhost:8080/oauth2/authorization/google`
+  //       `${url_deploy}/oauth2/authorization/google`
   //     );
   //     localStorage.setItem("token", response.data.token);
   //     const decodeToken = jwtDecode<CustomJWT>(response.data.token);
@@ -216,14 +218,14 @@ export default function Page() {
               <div className="flex justify-center mt-2">
                 <a
                   //onClick={() => signIn("google")}
-                  href="http://localhost:8080/oauth2/authorization/google"
+                  href="https://vootreeveevuu.up.railway.app/oauth2/authorization/google"
                   className="text-sm font-medium text-gray-700 hover:text-sky-600 mr-4 flex items-center"
                 >
                   <GoogleOutlined className="mr-1" />
                   Login with Google
                 </a>
                 <a
-                  href="http://localhost:8080/oauth2/authorization/facebook"
+                  href="https://vootreeveevuu.up.railway.app/oauth2/authorization/facebook"
                   className="text-sm font-medium text-gray-700 hover:text-sky-600 flex items-center"
                 >
                   <FacebookOutlined className="mr-1" />

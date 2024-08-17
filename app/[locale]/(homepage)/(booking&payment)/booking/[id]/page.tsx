@@ -22,7 +22,8 @@ import { CustomJWT } from "@/utils/jwtCustom";
 //   email: string;
 //   roles: string;
 // }
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const Homepage = ({ params }: { params: { id: string } }) => {
   const id = params.id;
   const [daysCount, setDaysCount] = useState(0);
@@ -36,6 +37,7 @@ const Homepage = ({ params }: { params: { id: string } }) => {
   const [phoneNum, setPhoneNum] = useState("");
   const [role, setRole] = useState("");
   const [hotelData, setHotelData] = useState();
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const checkInValue = searchParams.get("checkIn") || "";
@@ -45,13 +47,11 @@ const Homepage = ({ params }: { params: { id: string } }) => {
     const roomsToNum = parseInt(roomsValue, 10);
     const guestToNum = parseInt(guestValue, 10);
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8080/api/rooms/${id}`); // API backend trả về toàn bộ giá trị
+      const response = await fetch(`${url_deploy}/api/rooms/${id}`); // API backend trả về toàn bộ giá trị
       const allData = await response.json();
       setRoomData(allData); // Lưu trữ toàn bộ dữ liệu
       //if (response.status === 200) {
-      const response2 = await axios.get(
-        `http://localhost:8080/api/hotels/info/${id}`
-      );
+      const response2 = await axios.get(`${url_deploy}/api/hotels/info/${id}`);
       setHotelData(response2.data);
       //}
     };
@@ -72,9 +72,7 @@ const Homepage = ({ params }: { params: { id: string } }) => {
       const email = decode?.email;
       const role = decode?.roles[0];
       const fetchAPI = async () => {
-        const response = await axios.get(
-          `http://localhost:8080/api/users/${userId}`
-        );
+        const response = await axios.get(`${url_deploy}/api/users/${userId}`);
         const data = response.data;
         const firstName = data.firstName;
         const lastName = data.lastName;

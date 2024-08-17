@@ -6,7 +6,8 @@ import type { FilterDropdownProps } from "antd/es/table/interface";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function ActiveTable() {
   const [data, setData] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -17,7 +18,7 @@ export default function ActiveTable() {
   //const router = useRouter();
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/hotels")
+      .get(`${url_deploy}/api/hotels`)
       .then((response) => {
         const fetchedData = response.data
           .filter((item: any) => item.status === "ACTIVE")

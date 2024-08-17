@@ -13,6 +13,8 @@ import axios from "axios";
 
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function Page() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState(false);
@@ -24,7 +26,7 @@ export default function Page() {
   const onFinish = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        `${url_deploy}/api/auth/login`,
         values
       );
       localStorage.setItem("token", response.data.token);

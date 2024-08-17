@@ -20,7 +20,8 @@ import Image from "next/legacy/image";
 import { CustomJWT } from "@/utils/jwtCustom";
 const { Option } = Select;
 const { TabPane } = Tabs;
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 // upload avatar
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -69,12 +70,12 @@ const MyProfile = () => {
     if (tokenKey) {
       // Lấy dữ liệu từ API cho username
       const fetchBasicInfo = axios.get(
-        `http://localhost:8080/api/accounts/${tokenKey}`
+        `${url_deploy}/api/accounts/${tokenKey}`
       ); // Điều chỉnh URL thành endpoint API thực tế của bạn
 
       // Lấy dữ liệu từ API cho các thuộc tính còn lại
       const fetchProfile = axios.get(
-        `http://localhost:8080/api/users/${tokenKey}`
+        `${url_deploy}/api/users/${tokenKey}`
       ); // Điều chỉnh URL thành endpoint API thực tế của bạn
 
       // Kết hợp dữ liệu từ hai API
@@ -122,7 +123,7 @@ const MyProfile = () => {
     console.log(updatedData);
     // Gửi dữ liệu đến API
     axios
-      .put(`http://localhost:8080/api/users/update/${tokenKey}`, updatedData) // Điều chỉnh URL thành endpoint API thực tế của bạn
+      .put(`${url_deploy}/api/users/update/${tokenKey}`, updatedData) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Thông tin đã được cập nhật thành công!");
       })
@@ -140,7 +141,7 @@ const MyProfile = () => {
     // Gửi yêu cầu cập nhật email
     axios
       .post(
-        `http://localhost:8080/api/email/verify?curEmail=${currentEmail}&newEmail=${newEmail}&otp=${otp}`
+        `${url_deploy}/api/email/verify?curEmail=${currentEmail}&newEmail=${newEmail}&otp=${otp}`
       ) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Email đã được cập nhật thành công!");
@@ -170,7 +171,7 @@ const MyProfile = () => {
     // Gửi yêu cầu OTP với cả Current Email và New Email
     axios
       .post(
-        `http://localhost:8080/api/email/change-request?curEmail=${currentEmail}&newEmail=${newEmail}`
+        `${url_deploy}/api/email/change-request?curEmail=${currentEmail}&newEmail=${newEmail}`
       )
       .then((response) => {
         message.success("OTP đã được gửi thành công!");
@@ -188,7 +189,7 @@ const MyProfile = () => {
     // Gửi yêu cầu cập nhật email
     axios
       .post(
-        `http://localhost:8080/api/phone/verify?email=${currentEmail}&newPhoneNum=${newPhone}&otp=${otp}`
+        `${url_deploy}/api/phone/verify?email=${currentEmail}&newPhoneNum=${newPhone}&otp=${otp}`
       ) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Email đã được cập nhật thành công!");
@@ -220,7 +221,7 @@ const MyProfile = () => {
 
     axios
       .post(
-        `http://localhost:8080/api/phone/change-request?email=${currentEmail}&curPhoneNum=${currentPhone}&newPhoneNum=${newPhone}`
+        `${url_deploy}/api/phone/change-request?email=${currentEmail}&curPhoneNum=${currentPhone}&newPhoneNum=${newPhone}`
       )
       .then((response) => {
         message.success("OTP đã được gửi thành công!");
@@ -238,7 +239,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     if (tokenKey) {
-      setImageUrl(`http://localhost:8080/api/accounts/${tokenKey}/avatar`);
+      setImageUrl(`${url_deploy}/api/accounts/${tokenKey}/avatar`);
     }
   }, [tokenKey]);
 
@@ -295,7 +296,7 @@ const MyProfile = () => {
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action={`http://localhost:8080/api/accounts/${tokenKey}/avatar`}
+                action={`${url_deploy}/api/accounts/${tokenKey}/avatar`}
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >

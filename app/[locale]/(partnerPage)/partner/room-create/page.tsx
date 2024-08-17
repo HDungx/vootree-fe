@@ -24,7 +24,8 @@ import type { UploadProps } from "antd";
 import withAuth from "@/components/withAuth";
 const { Dragger } = Upload;
 const { Option } = Select;
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 const RoomCreate = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -86,7 +87,7 @@ const RoomCreate = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/hotels");
+      const response = await fetch(`${url_deploy}/api/hotels`);
       const allData = await response.json();
       setData(allData);
     } catch (error) {
@@ -96,7 +97,7 @@ const RoomCreate = () => {
 
   const getFacilities = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/facilities");
+      const response = await fetch(`${url_deploy}/api/facilities`);
       const facData = await response.json();
       setRoomFacilities(facData.filter((item: any) => item.facType === "ROOM"));
     } catch (error) {
@@ -106,7 +107,7 @@ const RoomCreate = () => {
 
   const fetchPropertyTypes = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/roomTypes");
+      const response = await fetch(`${url_deploy}/api/roomTypes`);
       const data = await response.json();
       setPropertyTypes(data);
     } catch (error) {
@@ -185,7 +186,7 @@ const RoomCreate = () => {
     try {
       // Gửi dữ liệu lên server
       const response = await axios.post(
-        `http://localhost:8080/api/rooms/partner/create/${hotelId}`,
+        `${url_deploy}/api/rooms/partner/create/${hotelId}`,
         updatedValues
       );
 
@@ -208,7 +209,7 @@ const RoomCreate = () => {
 
           // Upload new files for room
           await axios.post(
-            `http://localhost:8080/api/rooms/${roomId}/images`,
+            `${url_deploy}/api/rooms/${roomId}/images`,
             formData2,
             {
               headers: {

@@ -7,7 +7,8 @@ import HotelInfo from "../components/hotelInfo";
 import PolicyInfo from "../components/policyInfo";
 import RateInfo from "../components/rateInfo";
 import RoomInfo from "../components/roomInfo";
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const checkOutValue = searchParams.get("checkOut");
     const guestsValue = searchParams.get("guests");
     const roomsValue = searchParams.get("rooms") || "";
-    const response = await axios.get(`http://localhost:8080/api/hotels/${id}`, {
+    const response = await axios.get(`${url_deploy}/api/hotels/${id}`, {
       params: {
         id: id,
         city: searchValue,

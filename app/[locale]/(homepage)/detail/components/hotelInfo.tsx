@@ -47,15 +47,14 @@ interface HotelData {
 // interface HotelInfoProps {
 //   data: HotelData;
 // }
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function HotelInfo({ data }) {
   const [img, setImg] = useState<string[]>([]);
 
   useEffect(() => {
     if (data?.hotelImages?.length > 0) {
-      setImg(
-        data.hotelImages.map((img) => `http://localhost:8080${img.imageUrl}`)
-      );
+      setImg(data.hotelImages.map((img) => `${url_deploy}${img.imageUrl}`));
     }
   }, [data]);
 

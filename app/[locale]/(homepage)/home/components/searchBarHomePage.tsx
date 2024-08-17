@@ -50,10 +50,12 @@ export default function SearchBarHome() {
   const [selectionData, setSelectionData] = useState<string[]>([]);
   const [form] = Form.useForm();
   const t = useTranslations();
+  const url_deploy = "https://vootreeveevuu.up.railway.app";
+  const url_local = "http://localhost:8080";
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/hotels");
+        const response = await axios.get(`${url_deploy}/api/hotels`);
         const data = response.data;
         const filteredHotelName = data.map((item) => item.hotelName);
         const citySet = new Set(data.map((item) => item.city));

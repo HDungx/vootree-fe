@@ -21,7 +21,8 @@ interface BookingInfo {
   rooms: any;
   totalPrice: any;
 }
-
+const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_local = "http://localhost:8080";
 export default function Page() {
   const [paymentValues, setPaymentValues] = useState({});
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -109,18 +110,18 @@ export default function Page() {
     if (param) {
       const fetch = async () => {
         const payment = await axios.post(
-          `http://localhost:8080/api/payment/save-payment?${param}`
+          `${url_deploy}/api/payment/save-payment?${param}`
         );
       };
       const emailReceiptSender = async () => {
         const callAPI = await axios.post(
-          "http://localhost:8080/api/email-sender/send-receipt",
+          `${url_deploy}/api/email-sender/send-receipt`,
           emailReceipt
         );
       };
       const emailInfoSender = async () => {
         const callAPI = await axios.post(
-          "http://localhost:8080/api/email-sender/send-info",
+          `${url_deploy}/api/email-sender/send-info`,
           emailReceipt
         );
       };
