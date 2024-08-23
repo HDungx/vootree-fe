@@ -6,32 +6,35 @@ export default function Footer() {
   return (
     <>
       <div className="bg-gray-800 px-10 py-10" style={{ height: 400 }}>
-        <Row gutter={24}>
-          <Col span={6}>
-            <Image
-              src="/logo_preview_rev_2.png"
-              alt=""
-              width={200}
-              height={80}
-            />
-          </Col>
-          <Col span={6}>
-            <div className="mt-5">
-              <p className="text-3xl text-white">Về VooTreeVeeVuu </p>
-              <p></p>
-            </div>
-          </Col>
-          <Col span={6}>
-            <div className="mt-5  text-white ">
-              <p className="text-3xl ">Liên hệ chúng tôi trên</p>
-
-              <p className=" flex gap-4 mt-2">
-                <Image src="/icon/facebook.png" width={40} height={40} alt="" />
-                <Image src="/icon/google.png" width={40} height={40} alt="" />
-              </p>
-            </div>
-          </Col>
-        </Row>
+        <div className="items-center justify-center flex">
+          <Image src="/logo_preview_rev_2.png" width={200} height={80} alt="" />
+        </div>
+        <div>
+          <ul className="items-center justify-center flex mt-8">
+            <li className="p-5">
+              <Image src="/icon/google-1.png" alt="" width={40} height={40} />
+            </li>
+            <li className="p-5">
+              <Image
+                src="/icon/facebook-app-symbol.png"
+                alt=""
+                width={40}
+                height={40}
+              />
+            </li>
+            <li className="p-5">
+              <Image src="/icon/instagram.png" alt="" width={40} height={40} />
+            </li>
+            <li className="p-5">
+              <Image src="/icon/youtube.png" alt="" width={40} height={40} />
+            </li>
+          </ul>
+        </div>
+        <div className="items-center flex justify-center mt-8 text-white">
+          <p>
+            <p>© Copyright 2024 VooTreeVeeVuu - All Rights Reserved</p>
+          </p>
+        </div>
       </div>
     </>
   );

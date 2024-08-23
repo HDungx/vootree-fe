@@ -175,7 +175,7 @@ export default function Navbar({ searchbar, logo }) {
                       </div>
                     ) : (
                       <div className="flex justify-between items-center">
-                        <Link href="/login/login">
+                        <Link href="/login">
                           <button
                             type="button"
                             className="hover:bg-purple-950 hover:bg-opacity-40 text-white me-4 py-2 px-2 rounded border flex text-sm"
@@ -184,7 +184,7 @@ export default function Navbar({ searchbar, logo }) {
                             Đăng nhập
                           </button>
                         </Link>
-                        <Link href="/login/signup">
+                        <Link href="/partner/sign-up">
                           <button
                             type="button"
                             className="bg-sky-600 hover:bg-blue-700 hover:bg-opacity-40 font-bold text-white py-2 px-2 ps-4 pe-4 rounded flex text-sm"

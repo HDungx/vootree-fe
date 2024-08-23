@@ -109,7 +109,7 @@ export default function NavbarHome({ logo, bg }) {
                         <LanguageSwitcher />
                         <Link
                           prefetch
-                          href="/partner/signup"
+                          href="/partner/sign-up"
                           className="text-white hover:bg-gray-700 hover:bg-opacity-55 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                         >
                           {t("nav.partner")}

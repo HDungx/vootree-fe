@@ -113,9 +113,7 @@ export default function Forms({
     // Fetch property types from API
     const fetchPropertyTypes = async () => {
       try {
-        const response = await fetch(
-          `${url_deploy}/api/accommodationTypes`
-        ); // Replace with your actual API endpoint
+        const response = await fetch(`${url_deploy}/api/accommodationTypes`); // Replace with your actual API endpoint
         const data = await response.json();
         setPropertyTypes(data);
       } catch (error) {

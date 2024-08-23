@@ -41,7 +41,7 @@ export default function Layouts({ children }: { children: React.ReactNode }) {
               </div>
             </header>
             <div className="mt-36">{children}</div>
-            <Footer />
+            {/* <Footer /> */}
           </>
         )}
       </Layout>

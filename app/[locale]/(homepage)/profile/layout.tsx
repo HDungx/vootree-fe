@@ -7,9 +7,9 @@ import SearchBar from "../hotels/components/searchBar";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header>
+      {/* <header>
         <Navbar bg={styles.header} logo="/logo_preview_rev_1.png" />
-      </header>
+      </header> */}
 
       <div className="">{children}</div>
     </>
