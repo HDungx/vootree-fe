@@ -206,7 +206,7 @@ const MultiStepForm = () => {
       hotelStars: formData.stars,
       status: formData.status,
       // edit_status: "CREATE",
-      accommodationTypeId: formData.propertyType.id,
+      accommodationTypeId: formData.propertyType,
       userId: userId,
       hotelFacilities: hotelFacilitiesObject,
       rooms: [
@@ -234,9 +234,7 @@ const MultiStepForm = () => {
       // Kiểm tra status của phản hồi
       // Sau khi tạo thành công, thực hiện một yêu cầu GET để lấy danh sách khách sạn
       if (response.status === 200 || response.status === 201) {
-        const getHotelsResponse = await axios.get(
-          `${url_deploy}/api/hotels`
-        );
+        const getHotelsResponse = await axios.get(`${url_deploy}/api/hotels`);
 
         const hotels = getHotelsResponse.data;
         // Tìm khách sạn vừa được tạo
