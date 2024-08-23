@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import "chart.js/auto";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const StatisticsRoom = () => {
   const [selectedYear, setSelectedYear] = useState("");
@@ -13,7 +13,7 @@ const StatisticsRoom = () => {
   useEffect(() => {
     const fetchBookingData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/bookings`);
+        const response = await axios.get(`${url_local}/api/bookings`);
         const bookings = response.data;
 
         // Get distinct years from booking dates

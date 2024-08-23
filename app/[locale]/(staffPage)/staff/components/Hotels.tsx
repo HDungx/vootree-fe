@@ -75,7 +75,7 @@ const EditableCell = ({
     </td>
   );
 };
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const Hotels = () => {
   const [form] = Form.useForm();
@@ -87,7 +87,7 @@ const Hotels = () => {
     // Fetch hotels data from API
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/hotels`);
+        const response = await axios.get(`${url_local}/api/hotels`);
         const fetchedData = response.data
           .filter(
             (item) => item.status === "ACTIVE" || item.status === "INACTIVE"
@@ -106,7 +106,7 @@ const Hotels = () => {
     // Fetch room data from API
     const fetchRoomData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/rooms`);
+        const response = await axios.get(`${url_local}/api/rooms`);
         const fetchedRoomData = response.data.reduce((acc, room) => {
           const hotelId = room.hotelId.toString();
           if (!acc[hotelId]) {
@@ -160,10 +160,10 @@ const Hotels = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/hotels/staff/update/${key}`
+        `${url_local}/api/hotels/staff/update/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/hotels/staff/update/${key}`,
+        `${url_local}/api/hotels/staff/update/${key}`,
         row
       );
       const newData = [...data];

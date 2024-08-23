@@ -14,7 +14,7 @@ const checkInValue = dayjs().format("YYYY-MM-DD");
 const checkOutValue = dayjs().add(1, "day").format("YYYY-MM-DD");
 const guestsValue = "1";
 const roomsValue = "1";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const CardHotel = () => {
   const [data, setData] = useState([]);
@@ -22,7 +22,7 @@ const CardHotel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${url_deploy}/api/hotels`); // API backend trả về toàn bộ giá trị
+        const response = await fetch(`${url_local}/api/hotels`); // API backend trả về toàn bộ giá trị
         const allData = await response.json();
         setData(allData); // Lưu trữ toàn bộ dữ liệu
       } catch (error) {
@@ -79,7 +79,7 @@ const CardHotel = () => {
                           avatar={{ shape: "square", size: "large" }}
                         >
                           <Image
-                            src={`${url_deploy}${
+                            src={`${url_local}${
                               item.hotelImages.length > 0
                                 ? item.hotelImages[0].imageUrl
                                 : "/placeholder.jpg"

@@ -31,7 +31,7 @@ type FieldType = {
 // const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
 //   console.log("Success:", values);
 // };
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo);
@@ -93,7 +93,7 @@ export default function Forms_Room({
     // Fetch facilities from API
     const fetchFacilities = async () => {
       try {
-        const response = await fetch(`${url_deploy}/api/facilities`); // Replace with your actual API endpoint
+        const response = await fetch(`${url_local}/api/facilities`); // Replace with your actual API endpoint
         const data = await response.json();
         const hotelFacilities = data.filter(
           (facility: any) => facility.facType === "ROOM"
@@ -109,7 +109,7 @@ export default function Forms_Room({
     // Fetch property types from API
     const fetchPropertyTypes = async () => {
       try {
-        const response = await fetch(`${url_deploy}/api/roomTypes`); // Replace with your actual API endpoint
+        const response = await fetch(`${url_local}/api/roomTypes`); // Replace with your actual API endpoint
         const data = await response.json();
         setPropertyTypes(data);
       } catch (error) {
@@ -143,7 +143,7 @@ export default function Forms_Room({
         selectedRow.room_images.map((image: any) => ({
           uid: image.id.toString(),
           name: image.imageName,
-          url: `${url_deploy}/api/room-images/${image.id}`,
+          url: `${url_local}/api/room-images/${image.id}`,
           status: "done",
         }))
       );
@@ -160,7 +160,7 @@ export default function Forms_Room({
   //   //   const isExistingImage = fileList.some((img) => img.uid === file.uid);
   //   //   if (isExistingImage) {
   //   //     try {
-  //   //       // await axios.delete(`${url_deploy}/api/hotels/images/${file.uid}`);
+  //   //       // await axios.delete(`${url_local}/api/hotels/images/${file.uid}`);
   //   //       message.success("Image deleted successfully!");
   //   //       setRoomImages(setRoomImages.filter((img) => img.id.toString() !== file.uid));
   //   //     } catch (error) {
@@ -275,7 +275,7 @@ export default function Forms_Room({
 
     try {
       const response = await axios.put(
-        `${url_deploy}/api/rooms/partner/update/${values.id}`,
+        `${url_local}/api/rooms/partner/update/${values.id}`,
         updatedValues
       );
       console.log("Update success:", response.data);
@@ -293,7 +293,7 @@ export default function Forms_Room({
 
         // Upload new files
         await axios.post(
-          `${url_deploy}/api/rooms/${values.id}/images`,
+          `${url_local}/api/rooms/${values.id}/images`,
           formData,
           {
             headers: {

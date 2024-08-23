@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import BookingTable from "./booking-table";
 const { Option } = Select;
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function BookingView() {
   const [data, setData] = useState([]);
@@ -18,7 +18,7 @@ export default function BookingView() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${url_deploy}/api/bookings`)
+      .get(`${url_local}/api/bookings`)
       .then((response) => {
         const allData = response.data.map((item, index) => ({
           ...item,

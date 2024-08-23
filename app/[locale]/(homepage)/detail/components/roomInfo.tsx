@@ -7,7 +7,7 @@ import { url } from "inspector";
 import Link from "next/link";
 import axios from "axios";
 
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function RoomInfo({ data, roomsQuantity, fetchData, hotelid }) {
   const validateRoom = data?.rooms?.length > 0;
@@ -36,7 +36,7 @@ export default function RoomInfo({ data, roomsQuantity, fetchData, hotelid }) {
         const guestsValue = searchParams.get("guests");
         const roomsValue = searchParams.get("rooms") || "";
         const response = await axios.get(
-          `${url_deploy}/api/hotels/${hotelid}`,
+          `${url_local}/api/hotels/${hotelid}`,
           {
             params: {
               id: hotelid,
@@ -95,7 +95,7 @@ export default function RoomInfo({ data, roomsQuantity, fetchData, hotelid }) {
               <Row className="mt-2">
                 <Col span={7} className="h-52">
                   <Image
-                    src={`${url_deploy}${item.room_images
+                    src={`${url_local}${item.room_images
                       .map((img) => img.imageUrl)
                       .slice(0, 1)}`}
                     width={300}

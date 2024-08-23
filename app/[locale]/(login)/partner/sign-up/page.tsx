@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 const { Option } = Select;
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const formItemLayout = {
   labelCol: {
@@ -68,7 +68,7 @@ const SignupPartner = () => {
     console.log(newValues);
     try {
       const response = await axios.post(
-        `${url_deploy}/api/auth/register`,
+        `${url_local}/api/auth/register`,
         newValues
       );
 

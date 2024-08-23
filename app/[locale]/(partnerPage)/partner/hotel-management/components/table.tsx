@@ -6,7 +6,7 @@ import type { InputRef, TableColumnsType, TableColumnType } from "antd";
 import { Button, Input, Space, Table, Tag } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import { log } from "console";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function Tables({
   onRowSelect,
@@ -23,7 +23,7 @@ export default function Tables({
 
   useEffect(() => {
     axios
-      .get(`${url_deploy}/api/hotels`)
+      .get(`${url_local}/api/hotels`)
       .then((response) => {
         const fetchedData = response.data
           .filter((item: any) => item.status === "ACTIVE")

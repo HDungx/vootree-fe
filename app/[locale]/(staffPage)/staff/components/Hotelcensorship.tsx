@@ -27,7 +27,7 @@ import axios from "axios";
 //     status: i % 2 === 0 ? "active" : "inactive",
 //   });
 // }
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const EditableCell = ({
   editing, // Xác định xem ô này có đang ở chế độ chỉnh sửa hay không
@@ -88,7 +88,7 @@ const Hotelcensorship = () => {
     // Fetch hotels data from API
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/hotels`);
+        const response = await axios.get(`${url_local}/api/hotels`);
         const fetchedData = response.data
           .filter(
             (item) => item.status === "PENDING" && item.edit_status === "CREATE"
@@ -107,7 +107,7 @@ const Hotelcensorship = () => {
     // Fetch room data from API
     const fetchRoomData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/rooms`);
+        const response = await axios.get(`${url_local}/api/rooms`);
         const fetchedRoomData = response.data
           .filter(
             (item) => item.status === "PENDING" && item.edit_status === "CREATE"
@@ -167,10 +167,10 @@ const Hotelcensorship = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/hotels/staff/update/${key}`
+        `${url_local}/api/hotels/staff/update/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/hotels/staff/update/${key}`,
+        `${url_local}/api/hotels/staff/update/${key}`,
         row
       );
       const newData = [...data].filter((item) => item.status === "PENDING");
@@ -199,10 +199,10 @@ const Hotelcensorship = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/hotels/staff/accept/${key}`
+        `${url_local}/api/hotels/staff/accept/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/hotels/staff/accept/${key}`,
+        `${url_local}/api/hotels/staff/accept/${key}`,
         row
       );
       message.success("Request accepted!");
@@ -230,10 +230,10 @@ const Hotelcensorship = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/hotels/staff/reject/${key}`
+        `${url_local}/api/hotels/staff/reject/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/hotels/staff/reject/${key}`,
+        `${url_local}/api/hotels/staff/reject/${key}`,
         row
       );
       message.success("Request rejected!");

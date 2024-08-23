@@ -23,7 +23,7 @@ ChartJS.register(
 );
 
 const { Option } = Select;
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const StatisticsHotel = () => {
   const [data, setData] = useState([]);
@@ -42,7 +42,7 @@ const StatisticsHotel = () => {
     setSelectedYear(currentYear);
 
     axios
-      .get(`${url_deploy}/api/bookings`)
+      .get(`${url_local}/api/bookings`)
       .then((response) => {
         const fetchedData = response.data || [];
         setData(fetchedData);

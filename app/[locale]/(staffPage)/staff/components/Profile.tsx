@@ -16,7 +16,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import moment from "moment";
 import { jwtDecode } from "jwt-decode";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -61,12 +61,12 @@ const Profile = () => {
     if (tokenKey) {
       // Lấy dữ liệu từ API cho username
       const fetchBasicInfo = axios.get(
-        `${url_deploy}/api/accounts/${tokenKey}`
+        `${url_local}/api/accounts/${tokenKey}`
       ); // Điều chỉnh URL thành endpoint API thực tế của bạn
 
       // Lấy dữ liệu từ API cho các thuộc tính còn lại
       const fetchProfile = axios.get(
-        `${url_deploy}/api/users/${tokenKey}`
+        `${url_local}/api/users/${tokenKey}`
       ); // Điều chỉnh URL thành endpoint API thực tế của bạn
 
       // Kết hợp dữ liệu từ hai API
@@ -114,7 +114,7 @@ const Profile = () => {
     console.log(updatedData);
     // Gửi dữ liệu đến API
     axios
-      .put(`${url_deploy}/api/users/update/${tokenKey}`, updatedData) // Điều chỉnh URL thành endpoint API thực tế của bạn
+      .put(`${url_local}/api/users/update/${tokenKey}`, updatedData) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Thông tin đã được cập nhật thành công!");
       })
@@ -132,7 +132,7 @@ const Profile = () => {
     // Gửi yêu cầu cập nhật email
     axios
       .post(
-        `${url_deploy}/api/email/verify?curEmail=${currentEmail}&newEmail=${newEmail}&otp=${otp}`
+        `${url_local}/api/email/verify?curEmail=${currentEmail}&newEmail=${newEmail}&otp=${otp}`
       ) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Email đã được cập nhật thành công!");
@@ -162,7 +162,7 @@ const Profile = () => {
     // Gửi yêu cầu OTP với cả Current Email và New Email
     axios
       .post(
-        `${url_deploy}/api/email/change-request?curEmail=${currentEmail}&newEmail=${newEmail}`
+        `${url_local}/api/email/change-request?curEmail=${currentEmail}&newEmail=${newEmail}`
       )
       .then((response) => {
         message.success("OTP đã được gửi thành công!");
@@ -180,7 +180,7 @@ const Profile = () => {
     // Gửi yêu cầu cập nhật email
     axios
       .post(
-        `${url_deploy}/api/phone/verify?email=${currentEmail}&newPhoneNum=${newPhone}&otp=${otp}`
+        `${url_local}/api/phone/verify?email=${currentEmail}&newPhoneNum=${newPhone}&otp=${otp}`
       ) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
         message.success("Email đã được cập nhật thành công!");
@@ -211,7 +211,7 @@ const Profile = () => {
     // Gửi yêu cầu OTP với cả Current Email và New Email
     axios
       .post(
-        `${url_deploy}/api/phone/change-request?email=${currentEmail}&curPhoneNum=${currentPhone}&newPhoneNum=${newPhone}`
+        `${url_local}/api/phone/change-request?email=${currentEmail}&curPhoneNum=${currentPhone}&newPhoneNum=${newPhone}`
       )
       .then((response) => {
         message.success("OTP đã được gửi thành công!");
@@ -228,7 +228,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (tokenKey) {
-      setImageUrl(`${url_deploy}/api/accounts/${tokenKey}/avatar`);
+      setImageUrl(`${url_local}/api/accounts/${tokenKey}/avatar`);
     }
   }, [tokenKey]);
   const handleChange = (info) => {
@@ -266,7 +266,7 @@ const Profile = () => {
 
   const ChangePass = (values) => {
     axios
-      .put(`${url_deploy}/api/accounts/${tokenKey}/change-pass`, {
+      .put(`${url_local}/api/accounts/${tokenKey}/change-pass`, {
         oldPassword: values.currentPassword,
         newPassword: values.newPassword,
         confPassword: values.confirmPassword,
@@ -305,7 +305,7 @@ const Profile = () => {
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action={`${url_deploy}/api/accounts/${tokenKey}/avatar`}
+                action={`${url_local}/api/accounts/${tokenKey}/avatar`}
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >

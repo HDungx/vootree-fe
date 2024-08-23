@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const StatisticsRevenue = () => {
   const [selectedYear, setSelectedYear] = useState('');
@@ -19,7 +19,7 @@ const StatisticsRevenue = () => {
 
   const fetchRevenueData = async (year) => {
     try {
-      const response = await axios.get(`${url_deploy}/api/bookings`);
+      const response = await axios.get(`${url_local}/api/bookings`);
       const bookings = response.data;
 
       // Filter bookings to include only those with status 'PAID'

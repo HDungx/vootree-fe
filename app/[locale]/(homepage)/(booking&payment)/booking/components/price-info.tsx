@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
 import { CustomJWT } from "@/utils/jwtCustom";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function PriceInfo({
   roomData,
@@ -113,7 +113,7 @@ export default function PriceInfo({
       };
       console.log(values);
       try {
-        const response = await axios.post(`${url_deploy}/api/bookings`, values);
+        const response = await axios.post(`${url_local}/api/bookings`, values);
         console.log(roomId);
         console.log(response.data.id);
         if (response.status === 201) {
@@ -163,7 +163,7 @@ export default function PriceInfo({
     const queryString = new URLSearchParams(paymentValues).toString();
     try {
       const payment = await axios.post(
-        `${url_deploy}/api/payment/create?${queryString}`
+        `${url_local}/api/payment/create?${queryString}`
       );
 
       console.log(payment.data.data);

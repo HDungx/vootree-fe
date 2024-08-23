@@ -77,7 +77,7 @@ const EditableCell = ({
     </td>
   );
 };
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const Roomcensorship = () => {
   const [form] = Form.useForm();
@@ -88,7 +88,7 @@ const Roomcensorship = () => {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url_deploy}/api/rooms`);
+        const response = await axios.get(`${url_local}/api/rooms`);
         const fetchedData = response.data
           .filter(
             (item) => item.status === "PENDING" && item.edit_status === "UPDATE"
@@ -138,10 +138,10 @@ const Roomcensorship = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/accounts/update/${key}`
+        `${url_local}/api/accounts/update/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/rooms/staff/update/${key}`,
+        `${url_local}/api/rooms/staff/update/${key}`,
         row
       );
       const newData = [...data];

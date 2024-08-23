@@ -5,7 +5,7 @@ import axios from "axios";
 type FacilityCheckBoxProps = {
   setCheckedValues: (checkedValues: any[]) => void;
 };
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function FacilityCheckBox({
   setCheckedValues,
@@ -16,7 +16,7 @@ export default function FacilityCheckBox({
 
   useEffect(() => {
     axios
-      .get(`${url_deploy}/api/facilities`)
+      .get(`${url_local}/api/facilities`)
       .then((response) => {
         const fetchedData = response.data.map((item: any) => ({
           key: item.facId,

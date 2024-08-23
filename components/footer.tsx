@@ -31,9 +31,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="items-center flex justify-center mt-8 text-white">
-          <p>
-            <p>© Copyright 2024 VooTreeVeeVuu - All Rights Reserved</p>
-          </p>
+          <p>© Copyright 2024 VooTreeVeeVuu - All Rights Reserved</p>
         </div>
       </div>
     </>

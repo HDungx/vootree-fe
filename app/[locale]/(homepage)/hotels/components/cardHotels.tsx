@@ -66,7 +66,7 @@ interface HotelData {
   ratings: any[]; // Placeholder for any type
 }
 
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 
 const Index = ({ checkedValues, priceRange }) => {
@@ -91,7 +91,7 @@ const Index = ({ checkedValues, priceRange }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${url_deploy}/api/hotels/search`, {
+        const response = await axios.get(`${url_local}/api/hotels/search`, {
           params: {
             city: searchValue,
             hotelName: searchValue,
@@ -297,7 +297,7 @@ const Index = ({ checkedValues, priceRange }) => {
                       >
                         <Col span={6} className="">
                           <Image
-                            src={`${url_deploy}${
+                            src={`${url_local}${
                               item.hotelImages.length > 0
                                 ? item.hotelImages[0].imageUrl
                                 : "/placeholder.jpg"

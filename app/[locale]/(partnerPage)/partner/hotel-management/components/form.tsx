@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 const { Option } = Select;
 import type { UploadFile } from "antd";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 type FieldType = {
   key?: number;
@@ -97,7 +97,7 @@ export default function Forms({
     // Fetch facilities from API
     const fetchFacilities = async () => {
       try {
-        const response = await fetch(`${url_deploy}/api/facilities`); // Replace with your actual API endpoint
+        const response = await fetch(`${url_local}/api/facilities`); // Replace with your actual API endpoint
         const data = await response.json();
         const hotelFacilities = data.filter(
           (facility: any) => facility.facType === "HOTEL"
@@ -113,7 +113,7 @@ export default function Forms({
     // Fetch property types from API
     const fetchPropertyTypes = async () => {
       try {
-        const response = await fetch(`${url_deploy}/api/accommodationTypes`); // Replace with your actual API endpoint
+        const response = await fetch(`${url_local}/api/accommodationTypes`); // Replace with your actual API endpoint
         const data = await response.json();
         setPropertyTypes(data);
       } catch (error) {
@@ -156,7 +156,7 @@ export default function Forms({
         parsedData?.hotelImages?.map((image: any) => ({
           uid: image.id.toString(),
           name: image.imageName,
-          url: `${url_deploy}${image.imageUrl}`,
+          url: `${url_local}${image.imageUrl}`,
           status: "done",
         }))
       );
@@ -232,7 +232,7 @@ export default function Forms({
   // const listHotelImg: UploadFile[] = hotelImages.map((image) => ({
   //   uid: image.id.toString(),
   //   name: image.imageName,
-  //   url: `${url_deploy}${image.imageUrl}`,
+  //   url: `${url_local}${image.imageUrl}`,
   //   status: 'done'
   // }));
 
@@ -299,7 +299,7 @@ export default function Forms({
 
     try {
       const response = await axios.put(
-        `${url_deploy}/api/hotels/partner/update/${values.key}`,
+        `${url_local}/api/hotels/partner/update/${values.key}`,
         updatedValues
       );
       console.log("Update success:", response.data);
@@ -318,7 +318,7 @@ export default function Forms({
 
         // Upload new files
         await axios.post(
-          `${url_deploy}/api/hotels/${values.key}/images`,
+          `${url_local}/api/hotels/${values.key}/images`,
           formData,
           {
             headers: {
@@ -333,7 +333,7 @@ export default function Forms({
       // const originalFileList = selectedRow.hotelImages.map((image: any) => ({
       //   uid: image.id.toString(),
       //   name: image.imageName,
-      //   url: `${url_deploy}${image.imageUrl}`,
+      //   url: `${url_local}${image.imageUrl}`,
       //   status: "done",
       // }));
 
@@ -344,7 +344,7 @@ export default function Forms({
 
       // for (const file of filesToDelete) {
       //   await axios.delete(
-      //     `${url_deploy}/api/hotels/${values.key}/images/${file.uid}`
+      //     `${url_local}/api/hotels/${values.key}/images/${file.uid}`
       //   );
       // }
 

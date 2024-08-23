@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { CustomJWT } from "@/utils/jwtCustom";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function Page() {
   const [form] = Form.useForm();
@@ -27,7 +27,7 @@ export default function Page() {
   const onFinish = async (values) => {
     try {
       const response = await axios.post(
-        `${url_deploy}/api/auth/login`,
+        `${url_local}/api/auth/login`,
         values
       );
       if (response.status === 200) {
@@ -59,7 +59,7 @@ export default function Page() {
   // const handleGoogleLogin = async () => {
   //   try {
   //     const response = await axios.get(
-  //       `${url_deploy}/oauth2/authorization/google`
+  //       `${url_local}/oauth2/authorization/google`
   //     );
   //     localStorage.setItem("token", response.data.token);
   //     const decodeToken = jwtDecode<CustomJWT>(response.data.token);

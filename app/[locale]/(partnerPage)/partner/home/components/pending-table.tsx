@@ -18,7 +18,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { FilterDropdownProps, SortOrder } from "antd/es/table/interface";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const deleteRow = async (id) => {
   try {
@@ -94,7 +94,7 @@ const PendingTable = () => {
   const [roomsData, setRoomsData] = useState({});
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${url_deploy}/api/hotels`);
+      const response = await axios.get(`${url_local}/api/hotels`);
       const fetchedData = response.data
         .filter((item: { status: string }) => item.status === "PENDING") // Lọc chỉ giữ lại các khách sạn có trạng thái là "active"
         .map((item: { id: { toString: () => any } }) => ({
@@ -111,7 +111,7 @@ const PendingTable = () => {
   // Fetch room data from API
   const fetchRoomData = async () => {
     try {
-      const response = await axios.get(`${url_deploy}/api/rooms`);
+      const response = await axios.get(`${url_local}/api/rooms`);
       const fetchedRoomData = response.data.reduce(
         (
           acc: {
@@ -162,7 +162,7 @@ const PendingTable = () => {
 
   const deleteRow = async (id) => {
     try {
-      await axios.delete(`${url_deploy}/api/hotels/${id}`);
+      await axios.delete(`${url_local}/api/hotels/${id}`);
       message.success("Row deleted successfully");
       fetchData(); // Refresh data after delete
     } catch (error) {
@@ -202,10 +202,10 @@ const PendingTable = () => {
       console.log(row);
       console.log(
         `Saving data for key ${key} to:`,
-        `${url_deploy}/api/hotels/staff/update/${key}`
+        `${url_local}/api/hotels/staff/update/${key}`
       );
       await axios.put(
-        `${url_deploy}/api/hotels/staff/update/${key}`,
+        `${url_local}/api/hotels/staff/update/${key}`,
         row
       );
       const newData = [...data].filter(

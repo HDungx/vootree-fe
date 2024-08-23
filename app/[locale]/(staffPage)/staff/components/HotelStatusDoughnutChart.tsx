@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const HotelStatusDoughnutChart = () => {
   // Dữ liệu mẫu cho biểu đồ
@@ -20,7 +20,7 @@ const HotelStatusDoughnutChart = () => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await axios.get('${url_deploy}/api/hotels'); // Replace with your API endpoint
+        const response = await axios.get('${url_local}/api/hotels'); // Replace with your API endpoint
         const hotels = response.data;
 
         const statusCounts = hotels.reduce(

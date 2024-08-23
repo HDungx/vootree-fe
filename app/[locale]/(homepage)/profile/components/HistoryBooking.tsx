@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { OpenAI } from "openai";
-const url_deploy = "https://vootreeveevuu.up.railway.app";
+const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const { TextArea } = Input;
 export default function HistoryBooking() {
@@ -41,7 +41,7 @@ export default function HistoryBooking() {
         const fetchData = async () => {
           try {
             const response = await axios.get(
-              `${url_deploy}/api/bookings/${userId}/booking-history`
+              `${url_local}/api/bookings/${userId}/booking-history`
             );
             setBookings(response.data);
             setHotelId(response.data.hotelId);
@@ -120,14 +120,14 @@ export default function HistoryBooking() {
 
         // Nếu không có thông tin nhạy cảm, tiếp tục xử lý
         const response = await axios.post(
-          `${url_deploy}/api/ratings`,
+          `${url_local}/api/ratings`,
           submitValues
         );
 
         if (response.status === 200) {
           message.success("Đánh giá thành công!");
           await axios.put(
-            `${url_deploy}/api/bookings/update/review-status/${bookingId}`
+            `${url_local}/api/bookings/update/review-status/${bookingId}`
           );
         }
       } catch (error) {
