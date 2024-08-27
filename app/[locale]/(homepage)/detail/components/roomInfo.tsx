@@ -94,12 +94,13 @@ export default function RoomInfo({ data, roomsQuantity, fetchData, hotelid }) {
               <strong className="text-lg">{item.roomType.typeName}</strong>
               <Row className="mt-2">
                 <Col span={7} className="h-52">
-                  <Image
+                  <img
                     src={`${url_local}${item.room_images
                       .map((img) => img.imageUrl)
                       .slice(0, 1)}`}
-                    width={300}
-                    height={235}
+                    // width={300}
+                    // height={235}
+                    style={{width:300,height:200}}
                     alt=""
                     className="rounded-lg"
                   />

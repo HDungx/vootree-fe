@@ -45,12 +45,13 @@ export default function BookingInfo({
     <>
       <Row className="h-24 ">
         <Col span={8}>
-          <Image
+          <img
             src={`${url_local}${hotelImages?.imageUrl}`}
             alt=""
             // width={170}
             // height={110}
             //layout="fill"
+            style={{width:170,height:110}}
           />
         </Col>
         <Col span={16} className="px-4">

@@ -2,6 +2,8 @@ import { Card, Col, Row, Select, Statistic } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import BookingTable from "./booking-table";
+import { jwtDecode } from "jwt-decode";
+import { CustomJWT } from "@/utils/jwtCustom";
 const { Option } = Select;
 const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
@@ -17,26 +19,34 @@ export default function BookingView() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`${url_local}/api/bookings`)
-      .then((response) => {
-        const allData = response.data.map((item, index) => ({
-          ...item,
-          index: index + 1,
-        }));
-        setData(allData);
-        setFilteredData(allData);
-        const uniqueHotelNames = Array.from(
-          new Set(allData.map((item) => item.hotelName))
-        ) as string[];
-        setHotelNames(uniqueHotelNames);
-        // Tính toán các số liệu thống kê
-        calculateStatistics(allData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the data!", error);
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decode = jwtDecode<CustomJWT>(token);
+      const id = decode.id;
+      axios
+        .get(`${url_local}/api/bookings`)
+        .then((response) => {
+          const filteredByOwner = response.data.filter(
+            (item) => item.hotelOwnerId === id
+          );
+          const allData = filteredByOwner.map((item, index) => ({
+            ...item,
+            index: index + 1,
+          }));
+          setData(allData);
+          setFilteredData(allData);
+          const uniqueHotelNames = Array.from(
+            new Set(allData.map((item) => item.hotelName))
+          ) as string[];
+          setHotelNames(uniqueHotelNames);
+          // Tính toán các số liệu thống kê
+          calculateStatistics(allData);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the data!", error);
+        });
+    }
   }, []);
 
   const calculateStatistics = (data) => {

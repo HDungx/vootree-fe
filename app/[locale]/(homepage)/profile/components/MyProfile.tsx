@@ -192,11 +192,11 @@ const MyProfile = () => {
         `${url_local}/api/phone/verify?email=${currentEmail}&newPhoneNum=${newPhone}&otp=${otp}`
       ) // Điều chỉnh URL thành endpoint API thực tế của bạn
       .then((response) => {
-        message.success("Email đã được cập nhật thành công!");
+        message.success("Số điện thoại đã được cập nhật thành công!");
       })
       .catch((error) => {
-        console.error("Có lỗi xảy ra khi cập nhật email!", error);
-        message.error("Cập nhật email thất bại!");
+        console.error("Có lỗi xảy ra khi cập nhật số điện thoại!", error);
+        message.error("Cập nhật số điện thoại thất bại!");
       });
   };
 
@@ -208,7 +208,7 @@ const MyProfile = () => {
 
     // Kiểm tra xem cả hai giá trị đều đã được nhập vào
     if (!currentPhone || !newPhone) {
-      message.error("Please enter both Current Phone and New Phone");
+      message.error("Hãy nhập đủ thông tin!");
       return; // Ngăn chặn việc gửi yêu cầu nếu thiếu dữ liệu
     }
 

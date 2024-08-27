@@ -15,14 +15,14 @@ const checkOutValue = dayjs().add(1, "day").format("YYYY-MM-DD");
 const guestsValue = "1";
 const roomsValue = "1";
 const url_deploy1 = "https://vootreeveevuu.up.railway.app";
-const url_local = "http://localhost:8080";
+const url_local = "http://localhost:8080/";
 const CardHotel = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${url_local}/api/hotels`); // API backend trả về toàn bộ giá trị
+        const response = await fetch(`http://localhost:8080/api/hotels`); // API backend trả về toàn bộ giá trị
         const allData = await response.json();
         setData(allData); // Lưu trữ toàn bộ dữ liệu
       } catch (error) {
@@ -43,7 +43,7 @@ const CardHotel = () => {
             arrows
             slidesToShow={4}
             slidesToScroll={1}
-            style={{ width: 1000, height: 400 }}
+            style={{ width: 1100, height: 400 }}
           >
             {loading ? (
               Array.from({ length: 5 }).map((_, index) => (
@@ -78,14 +78,14 @@ const CardHotel = () => {
                           active
                           avatar={{ shape: "square", size: "large" }}
                         >
-                          <Image
-                            src={`${url_local}${
-                              item.hotelImages.length > 0
-                                ? item.hotelImages[0].imageUrl
-                                : "/placeholder.jpg"
-                            }`}
-                            width={240}
-                            height={150}
+                          <img
+                            src={`http://localhost:8080${item.hotelImages.length > 0
+                              ? item.hotelImages[0].imageUrl
+                              : "/placeholder.jpg"
+                              }`}
+                            // width={240}
+                            // height={150}
+                            style={{width:240,height:150}}
                             alt="title"
                           />
                         </Skeleton>

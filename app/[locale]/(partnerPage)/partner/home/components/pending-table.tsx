@@ -18,6 +18,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { FilterDropdownProps, SortOrder } from "antd/es/table/interface";
+import { jwtDecode } from "jwt-decode";
+import { CustomJWT } from "@/utils/jwtCustom";
 const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 const deleteRow = async (id) => {
@@ -94,67 +96,85 @@ const PendingTable = () => {
   const [roomsData, setRoomsData] = useState({});
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${url_local}/api/hotels`);
-      const fetchedData = response.data
-        .filter((item: { status: string }) => item.status === "PENDING") // Lọc chỉ giữ lại các khách sạn có trạng thái là "active"
-        .map((item: { id: { toString: () => any } }) => ({
-          key: item.id.toString(),
-          ...item,
-        }));
-      setData(fetchedData);
-      // console.log(fetchedData);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decode = jwtDecode<CustomJWT>(token);
+        const id = decode.id;
+        const response = await axios.get(`${url_local}/api/hotels`);
+        const fetchedData = response.data
+          .filter((item) => item.status === "PENDING" && item?.user?.id === id)  // Lọc chỉ giữ lại các khách sạn có trạng thái là "active"
+          .map((item: { id: { toString: () => any } }) => ({
+            key: item.id.toString(),
+            ...item,
+          }));
+        setData(fetchedData);
+        // console.log(fetchedData);
+      }
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
+  };
+
   // Fetch room data from API
   const fetchRoomData = async () => {
     try {
-      const response = await axios.get(`${url_local}/api/rooms`);
-      const fetchedRoomData = response.data.reduce(
-        (
-          acc: {
-            [x: string]: {
-              key: any;
-              roomNumber: any;
-              roomType: any;
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decode = jwtDecode<CustomJWT>(token);
+        const id = decode.id;
+        const response = await axios.get(`${url_local}/api/rooms`);
+        // const filteredData = response.data.filter((item) =>item)
+        const fetchedRoomData = response.data.reduce(
+          (
+            acc: {
+              [x: string]: {
+                key: any;
+                roomNumber: any;
+                roomType: any;
+                price: any;
+                capacity: any;
+                quantity: any;
+                roomSize: any;
+              }[];
+            },
+            room: {
+              hotelId: { toString: () => any };
+              id: { toString: () => any };
+              roomType: { typeName: any };
               price: any;
               capacity: any;
               quantity: any;
               roomSize: any;
-            }[];
-          },
-          room: {
-            hotelId: { toString: () => any };
-            id: { toString: () => any };
-            roomType: { typeName: any };
-            price: any;
-            capacity: any;
-            quantity: any;
-            roomSize: any;
-          }
-        ) => {
-          const hotelId = room.hotelId.toString();
-          if (!acc[hotelId]) {
-            acc[hotelId] = [];
-          }
-          acc[hotelId].push({
-            key: room.id.toString(),
-            roomNumber: room.id,
-            roomType: room.roomType.typeName,
-            price: room.price,
-            capacity: room.capacity,
-            quantity: room.quantity,
-            roomSize: room.roomSize,
-          });
+            }
+          ) => {
+            const hotelId = room.hotelId.toString();
+            if (!acc[hotelId]) {
+              acc[hotelId] = [];
+            }
+            acc[hotelId].push({
+              key: room.id.toString(),
+              roomNumber: room.id,
+              roomType: room.roomType.typeName,
+              price: room.price,
+              capacity: room.capacity,
+              quantity: room.quantity,
+              roomSize: room.roomSize,
+            });
 
-          return acc;
-        },
-        {}
-      );
-      setRoomsData(fetchedRoomData);
-      // console.log( fetchedRoomData);
+            return acc;
+          },
+          {}
+        );
+        setRoomsData(fetchedRoomData);
+        // console.log( fetchedRoomData);
+      }
     } catch (error) {
       console.error("Error fetching room data: ", error);
     }
@@ -251,7 +271,7 @@ const PendingTable = () => {
   const getColumnSearchProps = (dataIndex: string) => ({
     filterDropdown:
       (props: FilterDropdownProps) =>
-      ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) =>
+        ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) =>
         (
           <div
             style={{
@@ -456,6 +476,7 @@ const PendingTable = () => {
         title: "Giá",
         dataIndex: "price",
         key: "price",
+        render: (text) => formatCurrency(text)
       },
       {
         title: "Sức chứa",

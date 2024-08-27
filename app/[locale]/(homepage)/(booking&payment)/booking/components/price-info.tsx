@@ -22,7 +22,7 @@ export default function PriceInfo({
   const roomType = roomData?.roomType?.typeName;
   const roomPrice = roomData?.price;
   const roomId = roomData?.id;
-  const hotelName = roomData ? roomData?.hotel?.hotelName : "Không tồn tại";
+  const hotelName = roomData ? roomData?.hotelName : "Không tồn tại";
   const hotelPhoneNum = roomData
     ? roomData?.hotel?.hotelPhoneNum
     : "Không tồn tại";
@@ -214,6 +214,7 @@ export default function PriceInfo({
     saveBookingData(bookingData);
     setIsModalVisible(false);
     message.info("Dữ liệu đã được lưu lại trong vòng 45 phút.");
+    window.location.href="/profile?tab=myBooking"
   };
 
   return (

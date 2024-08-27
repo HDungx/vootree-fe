@@ -243,30 +243,34 @@ const Index = ({ checkedValues, priceRange }) => {
         <div>
           <Card className="h-30">
             <Card className="w-32 justify-center items-center flex">
-              <strong className="text-sky-800 text-base">Sắp xếp</strong>
+              <strong className="text-sky-800 text-base cursor-pointer">Sắp xếp</strong>
             </Card>
-            <Card.Grid style={gridStyle}>Tất cả</Card.Grid>
+            <Card.Grid style={gridStyle} className="cursor-pointer">Tất cả</Card.Grid>
             <Card.Grid
               style={gridStyle}
               onClick={() => handleSort("lprice", "asc")}
+              className="cursor-pointer"
             >
               Giá tăng dần
             </Card.Grid>
             <Card.Grid
               style={gridStyle}
               onClick={() => handleSort("hprice", "desc")}
+              className="cursor-pointer"
             >
               Giá giảm dần
             </Card.Grid>
             <Card.Grid
               style={gridStyle}
               onClick={() => handleSort("hotelStars", "desc")}
+              className="cursor-pointer"
             >
               Xếp hạng sao
             </Card.Grid>
             <Card.Grid
               style={gridStyle}
               onClick={() => handleSort("rate", "desc")}
+              className="cursor-pointer"
             >
               Đánh giá
             </Card.Grid>
@@ -296,13 +300,15 @@ const Index = ({ checkedValues, priceRange }) => {
                         className="p-3 border h-56 hover:shadow-md rounded-md"
                       >
                         <Col span={6} className="">
-                          <Image
-                            src={`${url_local}${
+                          <img
+                            src={`http://localhost:8080${
                               item.hotelImages.length > 0
                                 ? item.hotelImages[0].imageUrl
                                 : "/placeholder.jpg"
+                            
                             }`}
-                            layout="fill"
+                            //layout="fill"
+                            style={{width:240,height:200}}
                             alt=""
                             className="rounded-l-sm"
                           />

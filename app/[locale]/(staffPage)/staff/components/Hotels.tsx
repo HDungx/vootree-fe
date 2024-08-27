@@ -329,7 +329,7 @@ const Hotels = () => {
     {
       title: "City",
       dataIndex: "city",
-      width: "5%",
+      width: "10%",
       editable: false,
       ...getColumnSearchProps("city"),
     },
@@ -343,7 +343,7 @@ const Hotels = () => {
     {
       title: "Phone Number",
       dataIndex: "hotelPhoneNum",
-      width: "15%",
+      width: "10%",
       editable: false,
       ...getColumnSearchProps("hotelPhoneNum"),
     },
@@ -369,7 +369,7 @@ const Hotels = () => {
       editable: true,
     },
     {
-      title: "operation",
+      title: "",
       dataIndex: "operation",
       render: (_, record) => {
         const editable = isEditing(record);

@@ -97,6 +97,7 @@ const MyBooking = () => {
       bookingId: bookingData.bookingId,
       userId: bookingData.userId,
     };
+    localStorage.setItem("selectedKey",bookingKey);
     localStorage.setItem("bookingInfo", JSON.stringify(paymentData));
     const queryString = new URLSearchParams(paymentValues).toString();
     try {

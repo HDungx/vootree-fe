@@ -87,8 +87,8 @@ export default function Page() {
           width: 70,
         }}
       >
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
+        <Option value="86">0</Option>
+        {/* <Option value="87">+87</Option> */}
       </Select>
     </Form.Item>
   );
@@ -246,7 +246,7 @@ export default function Page() {
             ]}
           >
             <Input
-              addonBefore={prefixSelector}
+              //addonBefore={prefixSelector}
               style={{
                 width: "100%",
               }}

@@ -60,8 +60,8 @@ const items = [
   ]),
   getItem("Censorship", "censorship1", <CheckSquareOutlined />, [
     getItem("Hotels censorship", "hotelcensorship1"),
-    getItem("Rooms upadate", "roomupdate1"),
-    getItem("Hotels upadate", "hotelupdate1"),
+    getItem("Rooms update", "roomupdate1"),
+    getItem("Hotels update", "hotelupdate1"),
   ]),
   getItem("Statistics", "statistics1", <PieChartOutlined />, [
     getItem("Hotels", "hotelstatistics"),

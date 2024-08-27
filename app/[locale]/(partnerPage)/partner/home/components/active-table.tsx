@@ -1,9 +1,11 @@
 "use client";
+import { CustomJWT } from "@/utils/jwtCustom";
 import { FormOutlined, SearchOutlined } from "@ant-design/icons";
 import type { InputRef, TableColumnType, TableColumnsType } from "antd";
 import { Button, Input, Space, Table, Tag } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 const url_deploy1 = "https://vootreeveevuu.up.railway.app";
@@ -17,27 +19,35 @@ export default function ActiveTable() {
   const router = useRouter();
   //const router = useRouter();
   useEffect(() => {
-    axios
-      .get(`${url_local}/api/hotels`)
-      .then((response) => {
-        const fetchedData = response.data
-          .filter((item: any) => item.status === "ACTIVE")
-          .map((item: any, index: number) => ({
-            key: item.id,
-            name: item.hotelName,
-            address: item.address,
-            status: item.status,
-            hotelStars: item.hotelStars,
-            hotelDescription: item.hotelDescription,
-            checkInTime: item.checkInTime,
-            checkOutTime: item.checkOutTime,
-            accommodationType: item.accommodationType.typeName,
-          }));
-        setData(fetchedData);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decode = jwtDecode<CustomJWT>(token);
+      const id = decode.id;
+
+      axios
+        .get(`${url_local}/api/hotels`)
+        .then((response) => {
+          const fetchedData = response.data
+            .filter(
+              (item: any) => item.status === "ACTIVE" && item?.user?.id === id
+            )
+            .map((item: any, index: number) => ({
+              key: item.id,
+              name: item.hotelName,
+              address: item.address,
+              status: item.status,
+              hotelStars: item.hotelStars,
+              hotelDescription: item.hotelDescription,
+              checkInTime: item.checkInTime,
+              checkOutTime: item.checkOutTime,
+              accommodationType: item.accommodationType.typeName,
+            }));
+          setData(fetchedData);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
   }, []);
 
   const handleSearch = (

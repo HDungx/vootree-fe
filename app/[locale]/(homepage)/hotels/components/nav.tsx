@@ -102,7 +102,7 @@ export default function Navbar({ bg, logo }) {
                       <div className="flex space-x-1">
                         <LanguageSwitcher />
                         <Link
-                          href="/partner/signup"
+                          href="/partner/sign-up"
                           className="  hover:bg-gray-700 hover:bg-opacity-55 hover:  rounded-md px-3 py-2 text-sm font-medium"
                         >
                           Hợp tác với chúng tôi

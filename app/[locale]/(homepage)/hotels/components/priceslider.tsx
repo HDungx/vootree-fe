@@ -77,9 +77,9 @@ export default function PriceSlider({ priceRange, setPriceRange }) {
             max={50000000}
             value={minValue}
             onChange={handleChangeMinValue}
-            style={{ width: 120 }}
+            style={{ minWidth: 120,paddingLeft:2 }}
           />
-          <span style={{ margin: "0 8px" }}>-</span>
+          <span style={{ margin: "0 5px" }}>-</span>
           <InputNumber
             className="font-semibold"
             formatter={currencyFormatter}
@@ -90,7 +90,7 @@ export default function PriceSlider({ priceRange, setPriceRange }) {
             max={50000000}
             value={maxValue}
             onChange={handleChangeMaxValue}
-            style={{ width: 120 }}
+            style={{ minWidth: 120,paddingLeft:2 }}
           />
           <Slider
             tooltip={{ formatter: null }}

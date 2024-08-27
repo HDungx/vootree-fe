@@ -264,7 +264,7 @@ const SignupPartner = () => {
             <div className="flex justify-center">
               <a
                 className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
-                onClick={() => (window.location.href = "/")} // Chuyển trang khi nút được nhấp
+                href="/login" // Chuyển trang khi nút được nhấp
                 style={{
                   background: "none",
                   border: "none",

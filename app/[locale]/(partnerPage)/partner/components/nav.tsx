@@ -147,6 +147,12 @@ export default function Navbar({ searchbar, logo }) {
                       >
                         Thống kê
                       </Link>
+                      <Link
+                        href="/home"
+                        className="text-white hover:bg-gray-700 hover:bg-opacity-55 rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Đi đến trang đặt phòng
+                      </Link>
                     </div>
                   </div>
                 </div>

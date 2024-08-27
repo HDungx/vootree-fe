@@ -18,21 +18,25 @@ import { Dropdown, Space } from "antd";
 import LanguageSwitcher from "./language-switcher";
 import { useTranslations } from "next-intl";
 import SearchBarHome from "@/app/[locale]/(homepage)/home/components/searchBarHomePage";
+import axios from "axios";
 
 export default function NavbarHome({ logo, bg }) {
   const [username, setUsername] = useState();
   const router = useRouter();
   const t = useTranslations();
-  useEffect(() => {
+   useEffect( () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodeToken = jwtDecode(token);
+    
       if (decodeToken && decodeToken.roles[0] == "CUSTOMER") {
         const use = decodeToken.sub;
         setUsername(use);
       }
+    
     }
   }, []);
+  
   const handleLogOut = () => {
     localStorage.removeItem("token");
     router.push("/login");
@@ -58,6 +62,7 @@ export default function NavbarHome({ logo, bg }) {
       </Menu.Item>
     </Menu>
   );
+
 
   return (
     <header className={bg}>
@@ -129,6 +134,7 @@ export default function NavbarHome({ logo, bg }) {
                         <Dropdown overlay={menu}>
                           <Space wrap>
                             <Avatar
+                              src
                               icon={<UserOutlined />}
                               name={username}
                               size="40"

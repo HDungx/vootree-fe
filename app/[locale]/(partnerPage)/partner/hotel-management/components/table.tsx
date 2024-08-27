@@ -6,6 +6,8 @@ import type { InputRef, TableColumnsType, TableColumnType } from "antd";
 import { Button, Input, Space, Table, Tag } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import { log } from "console";
+import { jwtDecode } from "jwt-decode";
+import { CustomJWT } from "@/utils/jwtCustom";
 const url_deploy1 = "https://vootreeveevuu.up.railway.app";
 const url_local = "http://localhost:8080";
 export default function Tables({
@@ -22,38 +24,43 @@ export default function Tables({
   const searchInput = useRef<InputRef>(null);
 
   useEffect(() => {
-    axios
-      .get(`${url_local}/api/hotels`)
-      .then((response) => {
-        const fetchedData = response.data
-          .filter((item: any) => item.status === "ACTIVE")
-          .map((item: any, index: number) => ({
-            key: item.id,
-            name: item.hotelName,
-            address: item.address,
-            city: item.city,
-            hotelPhoneNum: item.hotelPhoneNum,
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decode = jwtDecode<CustomJWT>(token);
+      const id = decode.id;
+      axios
+        .get(`${url_local}/api/hotels`)
+        .then((response) => {
+          const fetchedData = response.data
+            .filter((item: any) => item.status === "ACTIVE" && item?.user?.id === id)
+            .map((item: any, index: number) => ({
+              key: item.id,
+              name: item.hotelName,
+              address: item.address,
+              city: item.city,
+              hotelPhoneNum: item.hotelPhoneNum,
 
-            status: item.status,
-            hotelStars: item.hotelStars,
-            hotelDescription: item.hotelDescription,
-            checkInTime: item.checkInTime,
-            checkOutTime: item.checkOutTime,
+              status: item.status,
+              hotelStars: item.hotelStars,
+              hotelDescription: item.hotelDescription,
+              checkInTime: item.checkInTime,
+              checkOutTime: item.checkOutTime,
 
-            accommodationType: item.accommodationType,
-            hotelFacilities: item.hotelFacilities,
-            userID: item.user.id,
+              accommodationType: item.accommodationType,
+              hotelFacilities: item.hotelFacilities,
+              userID: item.user.id,
 
-            hotelImages: item.hotelImages,
-          }));
+              hotelImages: item.hotelImages,
+            }));
 
-        console.log(fetchedData);
+          console.log(fetchedData);
 
-        setData(fetchedData);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+          setData(fetchedData);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
   }, [reloadTable]);
 
   const handleSearch = (

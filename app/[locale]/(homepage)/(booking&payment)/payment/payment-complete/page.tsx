@@ -98,12 +98,24 @@ export default function Page() {
       window.location.href = "/home";
     }, 10000);
 
-    // Dọn dẹp interval và timeout khi component bị unmount
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
-    };
-  });
+    if (countdown == 0) {
+      localStorage.removeItem("bookingData");
+      const selectedBookingKey = localStorage.getItem("selectedKey");
+      if (selectedBookingKey) {
+        // Xóa key từ localStorage
+        localStorage.removeItem(selectedBookingKey);
+
+        // Xóa luôn "selectedBookingKey" nếu không cần thiết nữa
+        localStorage.removeItem("selectedKey");
+      }
+        window.location.href = "/home";
+      }
+      // Dọn dẹp interval và timeout khi component bị unmount
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timer);
+      };
+    });
 
   useEffect(() => {
     const param = new URLSearchParams(paymentValues).toString();
@@ -138,6 +150,18 @@ export default function Page() {
       currency: "VND",
     }).format(value);
   };
+
+  const handleDeleteBookingInfo = () =>{
+    localStorage.removeItem("bookingData");
+    const selectedBookingKey = localStorage.getItem("selectedKey");
+    if (selectedBookingKey) {
+      // Xóa key từ localStorage
+      localStorage.removeItem(selectedBookingKey);
+
+      // Xóa luôn "selectedBookingKey" nếu không cần thiết nữa
+      localStorage.removeItem("selectedKey");
+    }
+  }
 
   return (
     <>
@@ -225,7 +249,7 @@ export default function Page() {
               <Link
                 href={"/home"}
                 className="text-blue-500 text-xl font-semibold hover:text-blue-400 hover:underline"
-                //onClick={handleDeleteBookingInfo}
+                onClick={handleDeleteBookingInfo}
               >
                 Về trang chủ {countdown}
               </Link>

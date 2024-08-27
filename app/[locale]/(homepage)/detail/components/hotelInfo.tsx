@@ -111,14 +111,14 @@ export default function HotelInfo({ data }) {
             </Image.PreviewGroup>
           </Col>
           <Col span={12} className="h-48">
-            <Row className="gap-4 justify-end">
+            <Row className="gap-4 justify-center">
               <Image.PreviewGroup>
                 {img.slice(1, 5).map((path, index) => (
                   <Col key={index}>
                     <Image
                       src={path}
-                      width={280}
-                      height={182}
+                      width={240}
+                      height={180}
                       alt=""
                       className="rounded-sm"
                     />
@@ -130,23 +130,23 @@ export default function HotelInfo({ data }) {
         </Row>
       </div>
       <div className="m-5">
-        <Row className="justify-between">
-          <div
-            style={{ width: 580, height: 150 }}
+        <Row className="justify-between flex">
+          <Col span={12}
+            // style={{ width: 580, height: 150 }}
             className="px-4 py-2 rounded-md border shadow-sm"
           >
             <strong>Thông tin khách sạn</strong>
             <p className="mt-2">{data.hotelDescription}</p>
-          </div>
-          <div
-            style={{ width: 580, height: 150 }}
+          </Col>
+          <Col span={12}
+            // style={{ width: 580, height: 150 }}
             className="px-4 py-2 rounded-md border shadow-sm"
           >
             <strong>Dịch vụ/Tiện ích chính</strong>
             <div>
               <HotelFacilities data={data.hotelFacilities} />
             </div>
-          </div>
+          </Col>
         </Row>
       </div>
     </div>
