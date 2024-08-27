@@ -97,26 +97,26 @@ export default function HistoryBooking() {
         const submitValues = { ...values, hotelId, toDay, userId, bookingId };
 
         // Tạo đối tượng OpenAI trực tiếp với API key
-        const openai = new OpenAI({
-          apiKey:
-            "sk-SL4qXLcialx0UO5wwPWi4ItjSQPzDCfSMk8PeYXA2oT3BlbkFJT5I9o4UXpVY-tgoO07CLEkHcF1oabIkhvKRjcRXUIA",
-          dangerouslyAllowBrowser: true,
-        });
+        // const openai = new OpenAI({
+        //   apiKey:
+        //     "sk-SL4qXLcialx0UO5wwPWi4ItjSQPzDCfSMk8PeYXA2oT3BlbkFJT5I9o4UXpVY-tgoO07CLEkHcF1oabIkhvKRjcRXUIA",
+        //   dangerouslyAllowBrowser: true,
+        // });
 
-        // Gọi API kiểm tra nội dung review
-        const reviewCheckResponse = await openai.completions.create({
-          model: "gpt-3.5-turbo",
-          prompt: `Check if the following review contains sensitive information: ${submitValues.comment}`,
-          max_tokens: 50,
-        });
+        // // Gọi API kiểm tra nội dung review
+        // const reviewCheckResponse = await openai.completions.create({
+        //   model: "gpt-3.5-turbo",
+        //   prompt: `Check if the following review contains sensitive information: ${submitValues.comment}`,
+        //   max_tokens: 50,
+        // });
 
-        const reviewCheckResult = reviewCheckResponse.choices[0].text.trim();
+        // const reviewCheckResult = reviewCheckResponse.choices[0].text.trim();
 
-        if (reviewCheckResult.includes("Sensitive")) {
-          message.error("Nội dung đánh giá có chứa thông tin nhạy cảm!");
-          console.log("Nội dung đánh giá có chứa thông tin nhạy cảm!");
-          return;
-        }
+        // if (reviewCheckResult.includes("Sensitive")) {
+        //   message.error("Nội dung đánh giá có chứa thông tin nhạy cảm!");
+        //   console.log("Nội dung đánh giá có chứa thông tin nhạy cảm!");
+        //   return;
+        // }
 
         // Nếu không có thông tin nhạy cảm, tiếp tục xử lý
         const response = await axios.post(
